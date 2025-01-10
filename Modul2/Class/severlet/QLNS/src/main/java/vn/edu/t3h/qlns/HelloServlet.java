@@ -2,6 +2,7 @@ package vn.edu.t3h.qlns;
 
 import java.io.*;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -10,6 +11,7 @@ public class HelloServlet extends HttpServlet {
     private String message;
 
     public void init() {
+        System.out.println("init servlet HelloServlet");
         message = "Hello World!";
     }
 
@@ -23,6 +25,12 @@ public class HelloServlet extends HttpServlet {
         out.println("</body></html>");
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+    }
+
     public void destroy() {
+        System.out.println("destroy HelloServlet");
     }
 }

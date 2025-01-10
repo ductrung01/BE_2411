@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         EmployeeManagement em = new EmployeeManagement();
-        AccountManagement am = new AccountManagement();
-        TransactionManagement tm = new TransactionManagement();
+        ArrayList<Employee>employees =em.getEmployeess();
+        AccountManagement am = new AccountManagement(employees);
+        ArrayList<Account> accounts = am.getAccounts();
+        TransactionManagement tm = new TransactionManagement(accounts);
         Scanner sc = new Scanner(System.in);
         int n = 0;
         do{
@@ -23,9 +26,10 @@ public class Main {
                         am.chonChucNangQuanLyTaiKhoan();
                         break;
                     case 2:
-                        tm.chonChucNangGiaoDichTaiKhoan();
+                        tm.chonChucNangGiaoDichTaiKhoan(am);
                         break;
                     case 3:
+                        tm.displayAllTransactions();
                         break;
                     case 4:
                         em.chonChucNangQuanLyNhanVien();

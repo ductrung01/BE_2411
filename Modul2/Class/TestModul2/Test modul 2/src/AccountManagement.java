@@ -4,9 +4,17 @@ import java.util.Scanner;
 public class AccountManagement {
 
     ArrayList<Account> accounts = new ArrayList<>();
+    ArrayList<Employee> employees = null;
+
     public ArrayList<Account> getAccounts() {
         return accounts;
     }
+
+
+    public AccountManagement(ArrayList<Employee> employees) {
+        this.employees = employees;
+    }
+
     public void chonChucNangQuanLyTaiKhoan() {
         Scanner sc = new Scanner(System.in);
         int n = 0;
@@ -49,6 +57,14 @@ public class AccountManagement {
             }
         }   while (n != 6) ;
     }
+    public boolean isManagerExist(String managerAccountNumber) {
+        for (Employee e : employees) {
+            if (e.getId().equals(managerAccountNumber)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean  isAccountCodeExist(String accountNumber){
         for(Account a: accounts){
             if(a.getAccountNumber().equals(accountNumber )){
@@ -70,8 +86,8 @@ public class AccountManagement {
         int n = 0;
         do{
             System.out.println("---------Menu Thêm Tài Khoản Mới---------");
-            System.out.println("1.Nhập thông tin tài khoản");
-            System.out.println("2.Dừng nhập.");
+            System.out.println("1.Tiếp tục");
+            System.out.println("2.Thoát.");
             System.out.println("Vui lòng nhập lựa chọn: ");
             try{
                 n =  sc.nextInt();
@@ -85,11 +101,15 @@ public class AccountManagement {
                         String accountHolder = sc.nextLine();
                         System.out.println("Số dư ban đầu: ");
                         double balance = sc.nextDouble();
-                        System.out.println("Nhân viên quản lí:");
+                        sc.nextLine();
+                        System.out.println("Nhân viên quản lí(Nhập mã nhân viên):");
                         String managerAccountNumber = sc.nextLine();
-                        if(isAccountCodeExist(accountNumber) == true ){
-                            System.out.println("Thêm không thành công!Số tài khoản "+accountNumber+" đã tồn tại trong hệ thống.");
+                        if(isAccountCodeExist(accountNumber) == true ) {
+                            System.out.println("Thêm không thành công!Số tài khoản " + accountNumber + " đã tồn tại trong hệ thống.");
                             System.out.println("Vui lòng chọn Số tài khoản khác.");
+                        } else if (!isManagerExist(managerAccountNumber)) {
+                            System.out.println("Mã nhân viên không tồn tại trong hệ thống. Vui lòng kiểm tra lại.");
+
                         }else{
                            accounts.add(new Account(accountNumber,accountHolder,balance,null));
                             System.out.println("Thêm tài khoản thành công!");
@@ -113,8 +133,8 @@ public class AccountManagement {
         int n = 0;
         do{
             System.out.println("---------Sửa Thông Tin Tài Khoản---------");
-            System.out.println("1.Nhập để sửa thông tin tài khoản.");
-            System.out.println("2.Dừng nhập.");
+            System.out.println("1.Tiếp tục.");
+            System.out.println("2.Thoát.");
             System.out.println("Vui lòng nhập lựa chọn: ");
             try{
                 n =  sc.nextInt();
@@ -177,7 +197,7 @@ public void showAllAccount(){
 
         do {
             System.out.println("---------Xóa tài khoản---------");
-            System.out.println("1. Xóa tài khoản.");
+            System.out.println("1. Tiếp tục.");
             System.out.println("2. Thoát.");
             System.out.println("Vui lòng nhập lựa chọn: ");
             try {
@@ -226,7 +246,7 @@ public void showAllAccount(){
         Scanner sc = new Scanner(System.in);
         int n = 0;
         do{
-            System.out.println("1.Tìm kiếm thông tin tài khoản.");
+            System.out.println("1.Tiếp tục.");
             System.out.println("2.Thoát.");
             System.out.println("Vui lòng nhập lựa chọn: ");
             try{

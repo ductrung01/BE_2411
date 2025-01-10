@@ -12,9 +12,7 @@ public class EmployeeManagement {
     public ArrayList<Employee> getEmployeess() {
         return employees;
     }
-//    private int totalEmployee;
-//    private int currentEmployee = 0;
-//    private final int DEFAULT_NEW_SIZE = 10;
+
     public boolean  isemployeeCodeExist(String id){
         for(Employee e: employees){
             if(e.getId().equals(id)){
@@ -70,8 +68,8 @@ public class EmployeeManagement {
         int n = 0;
         do {
             System.out.println("---------Menu Thêm Nhân Viên---------");
-            System.out.println("1.Nhập thông tin nhân viên");
-            System.out.println("2.Dừng nhập.");
+            System.out.println("1.Tiếp tục.");
+            System.out.println("2.Thoát.");
             try {
                 n = sc.nextInt();
                 switch (n) {
@@ -106,7 +104,9 @@ public class EmployeeManagement {
         } while (n != 2);
 
     }
+    public void assignAccountToEmployee() {
 
+    }
 
 
 }

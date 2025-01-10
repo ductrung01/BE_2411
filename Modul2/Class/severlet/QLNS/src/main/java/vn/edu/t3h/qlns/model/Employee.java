@@ -1,23 +1,18 @@
 package vn.edu.t3h.qlns.model;
 
 public class Employee {
-    private String employeeId;
+    private Integer employeeId;
     private String name;
     private String position;
+    private Double salary;
+    private String departmentName;
+    private String hireDate;
 
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
-    public String getEmployeeId() {
+    public Integer getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -37,6 +32,14 @@ public class Employee {
         this.position = position;
     }
 
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
     public String getDepartmentName() {
         return departmentName;
     }
@@ -52,8 +55,4 @@ public class Employee {
     public void setHireDate(String hireDate) {
         this.hireDate = hireDate;
     }
-
-    private Double salary;
-    private String departmentName;
-    private String hireDate;
 }
