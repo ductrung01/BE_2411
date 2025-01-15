@@ -8,5 +8,7 @@
 <h1><%= "Hello World!" %></h1>
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
+<a href="department">Danh sách phòng ban</a>
+<a href="employee">Danh sách nhân viên</a>
 </body>
 </html>
