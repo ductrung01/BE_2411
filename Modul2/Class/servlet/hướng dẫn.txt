@@ -1,0 +1,97 @@
+- Các bước để làm:
+Bước 1: tạo ra hai file giao diện .jsp
+Bước 2: Trong controller phải extend Http sau đó @WebServlet gọi ra các name và value
+và gọi ra phương thức doGet sử dụng RequestDispatcher để trả về 1 file giao diện
+và dùng RequestDispatcher.forwar ròi trả về request và respond
+
+bước 3: tạo ra 1 packet impl trong DAO và 1 file interface  để kết nốt với cơ sở dữ liệu
+
+Bước 4: tại file interface tạo ra 1 List để lưu trữ các danh sách 
+vd: List<Employee> getAllEmployee
+
+Bước 5: trong packet trong DAO ta phải implement lại lớp interface kia
+
+Bước 6: Sau đó gọi overider lại cái List Employee đã tạo bên kia
+sau đó tạo ra 1 hàm để Connection getConnection để kết nối vs database , String các url, user, password ra
+Phương thức getConnection() ở đây dùng để tạo và trả về 1 biến trong java
+Bước 7: Tiếp theo gọi đến  Class.forName("com.mysql.cj.jdbc.Driver") để
+Class.forName("com.mysql.cj.jdbc.Driver"); được sử dụng trong Java để nạp (load) lớp driver JDBC cho MySQL.
+
+Bước 8:Sau đó gọi Connection connection = DriverManager.getConnection(url,user,password);
+để truyển 3 đối tượng vừa khởi tạo đó là url,user, password;sau đó return về connection
+Đoạn này là nạp 3 đối tượng đó vào connection thông qua getConnection
+
+Và sau đó chúng ta phải return về connection;
+
+Bước 9: + Tạo connection đến db 
+			  Connection connection = getConnection(); => Câu lệnh này dùng để thiết lập kết nối đến DB
+            List<Employee> employeesResult = new ArrayList<>(); => Câu lệnh này để khởi tao
+			ra 1 danh sách để lưu kết quả truy vấn
+			
+        + Tạo câu query
+				- Khởi tạo ra 1 biến sql để lưu câu lệnh truy vấn 
+				String sql = "SELECT * From employees e inner join " +
+                "departments d on e.department_id = d.department_id;";
+				
+				Sử dụng câu lệnh PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				để chuẩn bị một câu lệnh SQL cho việc thực thi.
+        + Thực thi câu query	
+			Sử dụng: ResultSet ( ResultSet là có sẵn trong jdbc để trả )
+			ResultSet resultSet = statement.executeQuery();
+			được sử dụng để thực thi một câu lệnh SQL truy vấn và nhận về kết quả dưới dạng một đối tượng ResultSet
+        + Lấy ra dữ liệu từ câu query đưa vào object java
+			Sử dụng vòng lặp while
+			 while (resultSet.next()) { =>  Phương thức này di chuyển con trỏ đến hàng tiếp theo trong ResultSet. 
+											Nếu có dữ liệu, nó trả về true, cho phép vòng lặp tiếp tục.
+                Employee employee = new Employee();
+                employee.setId(resultSet.getInt("employee_id"));
+                employee.setName(resultSet.getString("name"));
+                employee.setSalary(resultSet.getDouble("salary"));
+                employee.setDepartment(resultSet.getString("department"));
+                employee.setPosition(resultSet.getString("position"));
+                employee.setHireDate(resultSet.getString("hire_date")); => được sử dụng để lấy dữ liệu từ các cột tương ứng trong hàng hiện tại của ResultSet.
+                employees.add(employee); => thêm dữ liệu vừa lấy vào danh sách employees
+            }
+			sau đó thêm finally;
+			finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+			}
+        + Trả về kết quả là danh sách employee
+		return employeesResult;
+
+Bước 10: Trong service tạo ra 1 interface 
+Tạo ra 1 List<Employee> getAllEmployee
+Bước 11: Tạo ra 1 file trong service để implement lại interface đó
+Bước 12: Tạo ra 1 đối tượng departmentDAO của đối tượng departmentDAOImpl sau đó trả ;
+ DepartmentDao departmentDao = new DepartmentDaoImpl(); => Biến departmentDAO tham chiếu tới đối tượng DepartmentDaoImpl
+ return departmentDao.getAllDepartments(); => chính vì departmentDAO tham chiếu tới đối tượng DepartmentDaoImpl nên 
+											Cấu lệnh return này là để lấy ra tất cả phòng  từ đối tượng DepartmentDaoImpl
+
+Bước 13: Trong controller của lớp tương ứng khởi tạo 1 đối tượng EmployeeService
+  DepartmentService departmentService = new DepartmentServiceImpl();
+
+Bước 14: List<Department> departments = departmentService.getAllDepartments();
+Khởi tạo ra 1 danh sách để lưu các derpartment đc lấy các department ra từ departmentService;
+
+Bước 15:    req.setAttribute("employees", employees);
+Dòng mã này cho phép bạn truyền dữ liệu từ lớp điều khiển (Servlet) đến lớp hiển thị (JSP);
+
+Bước 16: Thêm dòng này vào file jsp
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+Bước 16 sử dụng vòng lặp foreach 
+		<c:forEach var="department" items="${departmentData}">
+		=> var="department" Đây là thuộc tính xác định tên biến mà bạn sẽ sử dụng để tham chiếu đến từng phần tử trong tập hợp khi lặp qua nó
+		=> items="${departmentData}":items là thuộc tính chỉ định tập hợp mà bạn muốn lặp qua.
+            <tr>
+                <td>${department.id}</td>
+                <td>${department.departmentName}</td>
+                <td>${department.location}</td>
+            </tr>
+        </c:forEach>
+	
