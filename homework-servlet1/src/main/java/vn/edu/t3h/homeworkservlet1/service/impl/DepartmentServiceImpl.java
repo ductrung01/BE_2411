@@ -7,7 +7,7 @@ import vn.edu.t3h.homeworkservlet1.service.DepartmentService;
 import java.util.List;
 
 public class DepartmentServiceImpl implements DepartmentService {
-   private DepartmentDAO departmentDAO;
+   private DepartmentDAO departmentDAO;// Tiem phu thuoc
    public DepartmentServiceImpl (DepartmentDAO departmentDAO) {
        this.departmentDAO = departmentDAO;
    }

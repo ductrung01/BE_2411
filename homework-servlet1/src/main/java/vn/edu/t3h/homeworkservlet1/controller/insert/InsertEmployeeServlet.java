@@ -41,7 +41,7 @@ public class InsertEmployeeServlet extends HttpServlet {
         employee.setHireDate(hireDate);
 
         employeeService.insertEmployee(employee);
-        resp.sendRedirect("/employeea");
+        resp.sendRedirect("/employee");
 
 
     }

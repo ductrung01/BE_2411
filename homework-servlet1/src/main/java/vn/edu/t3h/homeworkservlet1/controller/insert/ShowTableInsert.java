@@ -13,7 +13,7 @@ import java.util.logging.Handler;
 public class ShowTableInsert extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("add-employee.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("cms/add-employee.jsp");
         requestDispatcher.forward(req, resp);
     }
 }
