@@ -112,7 +112,9 @@
                 </li>
             </ul>
             <a class="btn btn-light me-2" href="#" role="button">Đăng ký</a>
-            <a class="btn btn-primary" href="#" role="button">Đăng nhập</a>
+            <c:if test="${empty currentUser}">
+                <a href="${applicationScope.baseUrl}/login">Đăng nhập</a>
+            </c:if>
         </div>
     </div> <!-- container.// -->
 </nav> <!-- navbar-main.// -->
