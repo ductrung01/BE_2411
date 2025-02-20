@@ -73,19 +73,19 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="employeeModel" items="${employeeModel}">
+        <c:forEach var="employeeModel" items="${employees}">
             <tr>
-                <td>${employeeModel.employeeId}</td>
+                <td>${employeeModel.id}</td>
                 <td>${employeeModel.name}</td>
                 <td>${employeeModel.position}</td>
                 <td>${employeeModel.salary}</td>
                 <td>${employeeModel.departmentName}</td>
                 <td>${employeeModel.hireDate}</td>
                 <td>
-                    <a href="/cms/action-employee?id=${employeeModel.employeeId}" class="btn btn-warning btn-sm">
+                    <a href="/cms/action-employee?id=${employeeModel.id}" class="btn btn-warning btn-sm">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <form action="/cms/action-employee?id=${employeeModel.employeeId}&deleted=true" method="post">
+                    <form action="/cms/action-employee?id=${employeeModel.id}&deleted=true" method="post">
                         <button type="submit" class="btn btn-danger">
                             <i class="fas fa-trash-alt"></i>
                         </button>

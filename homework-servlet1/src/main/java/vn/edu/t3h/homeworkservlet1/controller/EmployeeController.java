@@ -16,7 +16,7 @@ import java.util.List;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "employee",value = "/cms/employees")
+@WebServlet(name = "employee",value = "/cms/employee")
 public class EmployeeController extends HttpServlet {
     private EmployeeService employeeService;
 
@@ -35,8 +35,8 @@ public class EmployeeController extends HttpServlet {
         String toDate = req.getParameter("toDate");
         String position = req.getParameter("position");
         List<Employee> employees = employeeService.findByCondition(name,salary,fromDate,toDate,position);
-        req.setAttribute("employeeModel", employees);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("cms/employees.jsp");
+        req.setAttribute("employees", employees);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("employees.jsp");
         requestDispatcher.forward(req,resp);
     }
 }
