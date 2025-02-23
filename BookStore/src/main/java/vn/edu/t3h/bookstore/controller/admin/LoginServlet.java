@@ -29,16 +29,19 @@ public class LoginServlet extends HttpServlet {
             req.getSession().removeAttribute(Constans.SESSION_ID_CURRENT_USER);
             resp.sendRedirect("/");
         }
-        String message = req.getParameter("message");
-        req.setAttribute("message", message);
-        req.getRequestDispatcher("signin.jsp").forward(req, resp);
+        else{
+            String message = req.getParameter("message");
+            req.setAttribute("message", message);
+            req.getRequestDispatcher("signin.jsp").forward(req, resp);
+        }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        String urlRedirect =userService.login(username, password);
+        String urlRedirect =userService.login(username, password,req);
         resp.sendRedirect(urlRedirect);
 
     }

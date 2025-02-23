@@ -163,6 +163,7 @@
 </div>
 
 <c:choose>
+<%-- Kieemr tra dieu kien neu message kkhong trong thi se di vao lẹnh ben trong--%>
     <c:when test="${not empty message}">
         <c:choose>
             <c:when test="${message == 'loginSuccess'}">

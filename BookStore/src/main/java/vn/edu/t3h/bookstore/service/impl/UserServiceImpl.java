@@ -1,5 +1,6 @@
 package vn.edu.t3h.bookstore.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
 import vn.edu.t3h.bookstore.dao.RoleDAO;
 import vn.edu.t3h.bookstore.dao.UserDAO;
 import vn.edu.t3h.bookstore.model.RoleModel;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String username, String password) {
+    public String login(String username, String password, HttpServletRequest request) {
         String passwordEncrypted = PasswordUtils.encryptPassword(password); // Mã hóa mật khẩu
         // Khởi tạo ra biến password đã được mã hóa
         UserModel user = userDAO.findUserByUserNameAndPassword(username, passwordEncrypted);
@@ -33,15 +34,17 @@ public class UserServiceImpl implements UserService {
         if (roleModel == null) {
             urlRedirect = "/login?message=" + Constans.PERMISSION_DENIED; // Đường dẫn nếu không tìm thấy vai trò
             return urlRedirect;
-        } else {
-            // Kiểm tra vai trò của người dùng
-            if (roleModel.getCode().equals(Constans.ROLE.ROLE_ADMIN.name())) {
-                urlRedirect = "/cms/admin";
-            } else {
-                urlRedirect = "/";
-            }
-            return urlRedirect; // Trả về đường dẫn để điều hướng
         }
+        request.getSession().setAttribute(Constans.SESSION_ID_CURRENT_USER ,user);
+        // Kiểm tra vai trò của người dùng
+        if (roleModel.getCode().equals(Constans.ROLE.ROLE_ADMIN.name())) { //.name lchuyeeryen doi hang so thanh dang chuoi
+            urlRedirect = "/cms/admin-manger";
+        } else {
+            urlRedirect = "/";
+        }
+        return urlRedirect; // Trả về đường dẫn để điều hướng
 
     }
+
+
 }

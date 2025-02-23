@@ -200,12 +200,12 @@
         <a href="#">Liên Hệ</a>
     </div>
     <div id="userInfo" class="user-info">
-        <c:if test="${not empty currentUser}">
-            <span>Xin chào, ${currentUser.username}</span>
-            <a href="${applicationScope.baseUrl}/logout">Đăng xuất</a>
+        <c:if test="${not empty username}">
+            <span>Xin chào ${username}</span>
+            <a href="/logout">Đăng xuất</a>
         </c:if>
-        <c:if test="${empty currentUser}">
-            <a href="${applicationScope.baseUrl}/login">Đăng nhập</a>
+        <c:if test="${empty username}">
+            <a href="/login">Đăng nhập</a>
         </c:if>
     </div>
 </div>

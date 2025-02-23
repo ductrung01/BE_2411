@@ -9,4 +9,7 @@ public class Constans {
     public static  enum ROLE{
         ROLE_ADMIN,ROLE_USER;
     }
+    //enum là một kiểu dữ liệu đặc biệt trong Java, cho phép định nghĩa một
+    // tập hợp các hằng số. Enum giúp tăng tính
+    // rõ ràng và an toàn cho mã nguồn khi làm việc với các giá trị cố định
 }

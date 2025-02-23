@@ -5,15 +5,21 @@ public class UserModel {
     private String username;
     private String password;
     private String fullName;
-    private boolean deleted;
+    private String email;
+    private String phone;
+    private String gender;
+    private String address;
     private Integer roleId;
-
-    public UserModel(Integer id, String username, String password, String fullName, boolean deleted, Integer roleId) {
+public UserModel() {}
+    public UserModel(Integer id, String username, String password, String fullName, String email, String phone, String gender, String address, Integer roleId) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
-        this.deleted = deleted;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.address = address;
         this.roleId = roleId;
     }
 
@@ -24,20 +30,12 @@ public class UserModel {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", deleted=" + deleted +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", gender='" + gender + '\'' +
+                ", address='" + address + '\'' +
                 ", roleId=" + roleId +
                 '}';
-    }
-
-    public UserModel() {
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
     }
 
     public Integer getId() {
@@ -72,11 +70,43 @@ public class UserModel {
         this.fullName = fullName;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }

@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+
 <div class="container my-4">
     <div style="float: right">
+        <span>Xin chào ${username}</span>
         <a href="${applicationScope.baseUrl}/logout">Đăng xuất</a>
     </div>
     <h1 class="text-center mb-4">Manager Employee</h1>

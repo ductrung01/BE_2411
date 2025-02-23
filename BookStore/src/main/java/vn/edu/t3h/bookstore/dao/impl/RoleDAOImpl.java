@@ -17,7 +17,7 @@ public class RoleDAOImpl implements RoleDAO {
         RoleModel role = null;
         String sql = "SELECT id, name, code FROM role WHERE id = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection =   DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, roleId); // Set roleId

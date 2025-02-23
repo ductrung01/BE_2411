@@ -112,6 +112,10 @@
                 </li>
             </ul>
             <a class="btn btn-light me-2" href="#" role="button">Đăng ký</a>
+            <c:if test="${not empty currentUser}">
+                <span>Xin chào, ${currentUser.username}</span>
+                <a href="${applicationScope.baseUrl}/logout">Đăng xuất</a>
+            </c:if>
             <c:if test="${empty currentUser}">
                 <a href="${applicationScope.baseUrl}/login">Đăng nhập</a>
             </c:if>
