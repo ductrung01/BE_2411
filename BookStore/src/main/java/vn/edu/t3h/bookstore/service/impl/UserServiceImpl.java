@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         request.getSession().setAttribute(Constans.SESSION_ID_CURRENT_USER ,user);
         // Kiểm tra vai trò của người dùng
         if (roleModel.getCode().equals(Constans.ROLE.ROLE_ADMIN.name())) { //.name lchuyeeryen doi hang so thanh dang chuoi
-            urlRedirect = "/cms/admin-manger";
+            urlRedirect = "/cms/admin-manager";
         } else {
             urlRedirect = "/";
         }
