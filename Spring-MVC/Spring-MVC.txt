@@ -1,0 +1,164 @@
+Spring là framword đc phát triển lên từ servlet
+
+- Bean là các object được khởi tạo trong java và được thằng Bean container quản lý
+để nó sẽ tìm kiếm tất cả các thằng
+Khi khởi tạo dự án Spring-boots thì thằng bean container sẽ tìm tất cả những thằng khởi 
+taoh bean và nó sẽ tự động khởi tạo ra các bean 
+- Bean container vừa khởi tạo các bean và vừa lưu trữ các bean để khi mà có service nào 
+cần Dependency Injection (Tiêm phụ thuộc ) kiểu nếu ví dụ có 1 class nào cần tiêm phụ thuộc
+thì th bean sẽ tự thêm cái class mà class cần thêm kia vào 
+
+-	Dependency injectuon (DI) : Giúp tiêm phụ thuộc mà không cần khởi tạo đối tượng trực tiếp trong lớp đó
+						giúp giảm phụ thuộc và tăng tính tái sử dụng trong mã nguồn
+-   Invert of controll (IOC) : Spring quản lý vòng đời của các đối tượng (beans) , giúp ta chỉ cần khai báo vào
+						     Spring sẽ lo việc khởi tạo và quản lý nó
+			Ví dụ đơn giản:
+			b1: Khởi tạo bean
+					EmployeeDao beanEmployeeDao = new EmployeeDaoImpl();
+					DepartmentDao beanDepartmentDao = new DepartmentDaoImpl
+			b2 : Sử dụng DI để tiêm bean vào trong bean EmployeeService
+					EmployeeService employeeService = new EmployeeServiceImpl(beanEmployeeDao, beanDepartmentDao);
+		-> Cả quá trình trên gọi là IOC (invert of controll) , bản chất là IOC sử dụng DI để tạo ra các bean 
+-   Aspect-Oriented Programming (AOP): Giúp tách các phần chức  năng cross-cutting (ví dụ như logging , transaction managerment)
+							 khỏi các lớp nghiệp vụ chính
+			VD: Kiểu khi code thì sẽ có nhiều chỗ sẽ xuất ra Exception thì cái thằng AOP này sẽ có riêng 1 tầng
+				thực chất là 1 lớp để nó ghi ra những log đó mà mình ko cần ghi 
+		-> Kiểu nó tách 1 phần nghiệp vụ logic ra 1 class khác để tránh trùng lặp vào phần code xử lý logic
+				của chúng ta
+							 
+							 
+Lưu ý: DI và IOC khác nhau -> DI là chỉ tiêm phụ thuộc thoi
+							  IOC là cả quá trình từ khởi tạo bean đến tiêm phụ thuộc
+		Sau khi tất cả các bean đã được khởi tạo => spring container bean sẽ quản lý các bean (thực chất là các object)
+
+
+Ví dụ về việc sử dụng reflection :
+		- Reflection rất hay , sau này có thể viết được nhiều hàm come on từ reflection
+		  đặc biệt nhất là thằng import và exprot file ex
+		  
+Ví dụ về việc trong 1 class có rất nhiều thuộc tính , chúng ta ko cần phải getter , setter nhưng vẫn có thể duyệt được thuộc
+tính của nó
+
+Code ví dụ:
+		import java.lang.reflect.Field;
+
+public class Main {
+    private int id ;
+    private String name ;
+    private int age ;
+    private String gender ;
+    private String address ;
+/*
+    - su dung reflection
+   + duyet toan bo field cua class
+   + set value cho toan bo field, du cac field dang private
+ */
+
+
+
+    public static void main(String[] args) throws IllegalAccessException {
+      Main main = new Main();
+        System.out.println("Value before:"+main.toString());
+//        lay ra doi tuong class
+        Class<?> clazz = main.getClass();
+//        Lay ra danh sach tat ca cac field
+       Field[] allField=  clazz.getDeclaredFields();
+//       Duyet no
+       for (Field f : allField) {
+//           set = true de ci the chinh duoc value cho du dang private va ko co getter,setter
+           f.setAccessible(true);
+//           set value
+           if(f.getName().equals("id")){
+               f.set(main,1);
+           }
+           if(f.getName().equals("name")){
+               f.set(main,"Admin");
+           }
+           if(f.getName().equals("age")){
+               f.set(main,12);
+           }
+           if(f.getName().equals("gender")){
+               f.set(main,"Male");
+           }
+           if(f.getName().equals("address")){
+               f.set(main,"Yen hoa");
+           }
+       }
+        System.out.println("value after:"+main.toString());
+
+    }
+    @Override
+    public String toString() {
+        return "Main{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+}
+
+
+- Luồng xử lý trong spring:
+ Clien sẽ gửi 1 Request đến DispatchServlet
+ DispatchServlet nhận và gửi đến Hanlder Mapping
+ Hanlder Mapping sẽ kiểm tra xem từ url đấy sẽ map được đến controller nào
+ Và Hanlder Mapping sẽ gửi trở lại DispatchServlet 
+ DispatchServlet sẽ tìm đến Controller đấy
+ Controller tìm model và view trong database 
+ và trả lại về view
+ 
+ => Clien -> DispatchServlet -> Hanlder Mapping -> DispatchServlet -> Controller -> Model và view -> view
+ 
+ 
+ - Khởi tạo ra project
+ b1: Tạo 1 HomeController trong controller
+	Sử dụng 1 Anotation controller có tên là @Controller
+	@Controller : Sẽ giúp trả về dữ liệu dạng html,file view
+ b2: Sử dụng @GetMapping("/home");	
+ @GetMapping("/home")
+    public String home(Model model) {
+        return "home";
+    }
+	Lưu ý: @GetMapping: Sử dụng phương thức Http get
+	   @PostMapping: Sử dụng phương thức Http post
+	   @Controller
+	public class HomeController {
+    /*
+      @GetMapping: Sử dụng phương thức Http get
+	   @PostMapping: Sử dụng phương thức Http post
+     */
+    @GetMapping("/home")
+    public String home(Model model) {
+	//        Tra ve ten file trang-chu.jsp
+        return "trang-chu";
+    }
+	}
+  b3: Để mà cái controller này hoạt động được thì chúng ta sẽ phải config
+	  cái DispatchServlet , mấy config này để bên txt cấu hình
+	  
+Lưu ý:
+	context:component-scan: cho spring biet cần quét các folder package nào để tạo bean
+	tìm tất cả các class có annotation(@Controller, @Component,@Service,@Repository để tạo bean cho tất cả các class đó
+	Cấu hình component-scan để Spring tìm kiếm các controller
+Ví dụ: <context:component-scan base-package="vn.com.t3h.controller" />
+	Cấu hình view resolver để hiển thị JSP
+    để chỉ định cho spring (InternalResourceViewResolver) biết các file view được đặt tại folder nào
+    để khi trả ra tên file, (InternalResourceViewResolver) sẽ tự động tìm kiếm các file đó trong folder được chỉ định
+Ví dụ:
+	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--        config đường dẫn file sẽ bắt đầu bằng-->
+        <property name="prefix" value="/WEB-INF/views/" />
+        <!--        config đường dẫn file view sẽ kết thúc bằng -->
+        <property name="suffix" value=".jsp" />
+    </bean>
+	
+	b4: Chúng ta đã config trong dispatcher-servlet là tất cả file view sẽ được để trong folder view
+		nên chúng ta tạo ra file view
+		Sau Đó tạo 1 trang-chu.jsp sau đó chạy theo đường dẫn
+		
+Bài tập ví dụ: Đưa các trang trong templet vào dự án
+	b1: Tạo folder Resource(Tài nguyên) để đưa các file css , js vào trong
+
+		

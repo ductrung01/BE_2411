@@ -1,0 +1,198 @@
+1. Cấu hình component-scan để Spring tìm kiếm các controller-->
+    <context:component-scan base-package="vn.com.t3h.controller"
+-> ở đây là cấu hình component-scan để spring biết rồi quét hết packet controller này
+và tạo bean các class đánh dấu anotation (@Controller) thì nó sẽ tự động tạo bean
+
+Ví dụ: Ở lớp controller khi chúng ta tạo ra 1 class thì khi tạo thế 
+nó chỉ là 1 class thông thường nó chỉ tạo bean khi ta đánh dấu @Controller
+Lúc này thì tự động cái component-scan đã được config trong dispatcher để quét
+cái controller này rồi cho nên các class được tạo ra và được đánh dấu anotation thì nó sẽ tự động
+tạo bean cho các class đấy
+- Tạo bean tức là tạo ra 1 object
+	ví dụ: Product product = new Product();
+
+2. Lưu ý : ContextPath : Việc sử dụng contextPath rất hữu ích khi bạn cần xây dựng các đường dẫn đến 
+		tài nguyên tĩnh (như CSS, JavaScript, hình ảnh) hoặc các URL trong ứng dụng.
+		Bằng cách này, bạn không cần phải thay đổi đường dẫn nếu ứng dụng được triển khai ở một vị trí khác.
+-> Kiểu nó sẽ được trỏ thẳng ý , thẳng đến file đó 
+
+Ví dụ có 1 class có các data source có các thông tin để kết nối với db
+thì ta cũng config nó trong xml
+
+3. IOC là 1 kỹ thuật mở rộng, sử dụng DI là 1 kỹ thuật cụ thể giúp thực hiện IOC(dùng các DI để tạo ra các bean) 
+
+4. Về việc khi chúng ta cấu hình anotation (@Controller,..) như thế thì nó sẽ tự hiểu là nó sẽ cần phải tạo ra bean
+cho cái class đó 
+
+5. Bean Scopes 
+ - Tức là vòng đời sống của 1 bean , có nghĩa là kiểu khi tạo ra1 bean 
+thì cái vòng đời sống của cái bean đó như nào thì đó chính là cái config bean 
+scopes của nó 
+---------------------------------------------------------------------------------------------------------
+6. @Autowired
+- Tự động tiêm các bean vào trong các thuộc tính kiểu như này private ProductDao productDao
+nhưng nó chỉ tiêm được khi các tầng đánh dấu @
+Lưu ý :C1: Sử dụng Autowired nó sẽ tốn nhiều tài nguyên hơn vì nó phải sử dụng reflection
+
+	   C2:	Chúng ta có 1 cách khác thay vì sử dụng Autowired , thì sử dụng Dependency tiêm qua contructor
+	 private ProductService productService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+	
+7. @Repository
+- đánh dấu một lớp là một thành phần trong tầng truy cập dữ liệu (Data Access Layer), 
+  nơi thực hiện các thao tác với cơ sở dữ liệu như thêm, sửa, xóa và tìm kiếm dữ liệu.
+
+8. @Service
+- là một annotation trong Spring Framework, được sử dụng để đánh dấu một lớp là một thành phần dịch vụ trong ứng dụng. 
+- Đánh dấu lớp dịch vụ: @Service được dùng để đánh dấu một lớp là một service, nơi chứa logic nghiệp vụ của ứng dụng.
+-Tách biệt tầng dịch vụ: Giúp phân tách rõ ràng giữa tầng dịch vụ và tầng truy cập dữ liệu (repository), 
+ làm cho mã nguồn dễ bảo trì hơn.
+ 
+9. Các loại Annotation trong Spring
+- Trong Spring có rất nhiều loại Annotation như @Component,@Controller,@Service,@Repository,@RestController,@Repository đều
+được đánh dấu lớp Java làm thành phần (beans) trong Spring Container
+nhưng có 4 Annotation cần nhớ nhất là 
+a,@Component
+b,@Controller
+c,@Service
+d,@Repository
+
+Lưu ý:  Nếu lỗi liên quan đến bean thì kiểm tra xem đã đánh dấu hết chưa vì nếu đánh dấu thiếu sẽ gây ra phản ứng dây truyển , 
+controller-> service->dao
+		Dánh dấu thoi là chưa đủ vì ở Dispatcher-servlet ta mới chỗ phần component-scan ta mới quét cho thằng controller
+		chứ chưa quét cho service và dao nên chúng ta phải tạo ra thêm các component-scan để nó quét
+			
+			<context:component-scan base-package="vn.com.t3h.controller" />
+			<context:component-scan base-package="vn.com.t3h.service" />
+			<context:component-scan base-package="vn.com.t3h.dao" />
+	Nhưng nếu chúng ta làm dự án nhỏ chúng ta có thể quét từng packet 1 đc nhưng khi làm dự án to thì ra có thể quét cả
+	dự án to
+	    <context:component-scan base-package="vn.com.t3h"/>
+
+10. Cấu trúc phân cấp annotation
+- Khi đánh dấu @Component thì thằng Spring sẽ tự tạo bean cho lớp đấy 
+
+Lưu ý: Khi đi phỏng vấn họ hỏi @Controller,@Service,@Repository khác nhau chỗ nào thì trả lời
+3 Annotation này đều dùng để dánh dấu cho Spring container biết để tạo bean cho class đấy . Nhưng với mỗi
+cách dánh đấu thì nó sẽ phân chia thành các tầng khác nhau cho nên nó mới phân ra như vậy 
+@Controller: Chuyên được đánh trên các controller của project,Đây là tầng tiếp nhận request và sử lý request của project
+@Service: Chuyên được đánh dấu tại tầng xử lý logic của project
+@Repository:Đây là tầng dùng để giao tiếp với database
+
+11.Annotation bean
+Class gson chuyên biến các class trong java thành kiểu dữ liệu  json
+		Gson gson = new Gson();
+       // Convert object java to string json 
+       String jsonProducts = gson.toJson(products);
+	   
+Vì Gson nó là thư viện thay vì khi muốn chuyển như thế ở class nào cũng phải khởi tạo 1 cái Gson thì
+Sang Config sử dụng @Bean
+			@Bean
+			public Gson gson(){
+				return new Gson();
+			}
+			
+=> @Bean sẽ quy định lại mình muốn tạo bean như thế nào thay vì để cho spring container tự động tạo 
+
+
+12.JDBC Template:
+- Nó hỗ trợ tự đóng và mở(nói chung hỗ trợ chúng ta khá nhiều nhưng chúng ta phải config nó) ,
+Có 2 kiểu config
+	C1:Config theo kiểu bean factory, thì chúng ta sẽ config trong Dispatcher-servlet.xml và 
+		tạo ra 1 trang aplication.propertis
+	c2: Config hết trong class 
+	
+Các bước
+Bước 1: Tạo ra application.propertis để lưu lại thông tin config của database
+Bước 2: Thêm thư viện vào pom.xml
+<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.3.9</version>
+        </dependency>
+
+        <!-- Apache Commons DBCP2 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+
+        <!-- MySQL Connector/J -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.23</version>
+        </dependency>
+Bước 3: Đưa vào đây các application.properties các config:
+=>	# config database info
+	jdbc.driverClassName = com.mysql.cj.jdbc.Driver
+	jdbc.url = jdbc:mysql://localhost:3307/shop_book
+	jdbc.username=root
+	jdbc.password=01112003
+
+Bước 4:Config trong database
+ - Vào Dispatcher-servlet.xml
+	1. Trước tiên phải có 1 cái thằng để chỉ dẫn xem file chúng ta đặt ở đâu
+			<context:property-placeholder location="classpath:application.properties"/>
+	2. Config tạo ra bean của class Datasource, từ các thông tin database
+		- Tạo thẻ <bean></bean>
+		- Tạo id , class của nó id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		- Tạo ra các dataSource
+		 
+		 
+=>		  <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+			<property name="driverClassName" value="${jdbc.driverClassName}"/>
+			<property name="username" value="${jdbc.username}"/>
+			<property name="url" value="${jdbc.url}"/>
+			<property name="password" value="${jdbc.password}"/>
+		  </bean>
+
+Bước 5 : Cấu hình tạo ra bean của jdbc template
+		- Config tạo bean của JDBC Template
+		- Sử dụng thẻ bean
+		- Thêm id và class id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
+		- Tiêm phụ thuộc properties    :    <property name="dataSource" ref="dataSource"/>
+			<!--    Config tạo bean của JDBC Template-->
+=>   	    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+			<!--Tiem phu thuoc properti-->
+			<property name="dataSource" ref="dataSource"/>
+			</bean>
+
+Bước 6: Tạo bean cho class quản lý Transaction
+		- Tạo ra thẻ bean 
+		- Tạo ra id , class     id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+		!--Tạo bean cho class quản lý Transaction-->
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		</bean>
+		
+=> 			<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+				<property name="dataSource" ref="dataSource"/>
+			</bean>
+
+Config xong  nhưng đấy ms là xml thoi còn làm như nào dùng được nó thì phải code
+
+Ví dụ hiển thị dữ liệu
+	Bước 1 : Vào ProductDaoImpl @Autowired cái JdbcTemplate
+			  @Autowired
+			  private JdbcTemplate jdbcTemplate;
+	Bước 2 : Tạo câu lệnh truy vấn 
+				 String sql = "select * from products";
+	Bước 3 : List<Product> products = jdbcTemplate.query(sql, new RowMapper<Product>() {
+		jdbcTemplate.query với RowMapper để lấy danh sách sản phẩm từ cơ sở dữ liệu.
+		RowMapper trong ProductService để ánh xạ dữ liệu từ cơ sở dữ liệu vào đối tượng Product:
+		RowMapper<Product>: Được sử dụng để ánh xạ từng hàng kết quả từ ResultSet thành một đối tượng Product.
+	Bước 4: @Override lại 
+	  @Override
+            public Product mapRow(ResultSet resultSet, int i) throws SQLException {
+                return null;
+            }
+	------------
+	- rowNum là một tham số trong phương thức mapRow của RowMapper trong Spring JDBC. 
+	Đây là chỉ số của hàng hiện tại trong kết quả truy vấn mà bạn đang xử lý.
+	-  rowNum có kiểu dữ liệu là int
+	
+	Bước 5
