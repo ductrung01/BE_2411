@@ -1,0 +1,289 @@
+		Lập trình Hibernate
+1. Giới thiệu
+	- Hibernate là một framework ORM (Object-Relational Mapping)(Hoặc cx có thể gọi nó là thư viện) cho Java, 
+	  giúp đơn giản hóa việc tương tác với cơ sở dữ liệu quan hệ.
+	  Nó cho phép các lập trình viên làm việc với cơ sở dữ liệu thông qua 
+	  các đối tượng Java mà không cần phải viết nhiều mã SQL.
+	- ORM là thư viện giúp tự động mapping dữ liệu ở trong database với các class
+	  trong java còn việc mapping và thao tác với dữ liệu như thế nào thì chúng ta phải sử dụng Hibernate	  
+=> Hibernate là 1 công cụ được ORM sử dụng để mapping dữ liệu database ra class java hoặc đổi ngược lại 
+từ class java ra database	 
+
+a, Persistence object
+- Chính là các POJO object map với các table tương ứng của cơ sở dữ liệu quan hệ. 
+Nó như là những “thùng xe” chứa dữ liệu từ ứng dụng để ghi xuống database, 
+hay chứa dữ liệu tải lên ứng dụng từ database. (Kiểu nó chính là các class Entity)
+
+b,Hibernate Session
+- Mỗi một đối tượng session được Session factory tạo ra sẽ tạo một kết nối đến database.
+(Kiểu trước kia chúng ta làm việc với jdbc chúng ta muốn thao tác với database, chúng ta phải tạo 1 Connection
+thì thay vì viêc chúng ta sử dụng connection đáy thì khi chúng ta làm việc bằng Hibernate thì chúng ta phải tạo ra
+các đối tượng Session , Các đối tượng session này chính là thể hiện các phiên làm việc, những lần chúng ta thao tác với database
+, mỗi lần chúng ta thao tác với database thì chúng ta phải tạo ra 1 session thì session đó sẽ được session factory tạo ra)
+
+c,Session Factory
+- Là một interface giúp tạo ra session kết nối đến database bằng cách đọc các cấu hình trong 
+Hibernate configuration. Mỗi một database phải có một session factory.
+- Tỉ dụ nếu ta sử dụng MySQL, và Oracle cho ứng dụng Java của mình thì ta cần có một session factory 
+cho MySQL, và một session factory cho Oracle.
+
+-> Thằng Session Factory này nó đã được config ở trong file config chỗ EntityManager rồi, chúng ta 
+cũng có thể config lại nhưng ko cần 
+
+d,Transation:
+- Là transaction đảm bảo tính toàn vẹn của phiên làm việc với cớ sở dữ liệu. Tức là nếu có một lỗi xảy 
+ra trong transaction thì tất cả các tác vụ thực hiện sẽ thất bại.
+ví dụ như là có 2 cấu lệnh sql mà chạy cả hai mà câu lệnh thứ 2 bị có vấn đề hay lỗi gì thì hai câu đấy đều ko chạy được
+
+e,Query:
+- Hibernate cung cấp các câu chuy vấn HQL (Hibernate Query Language) tới database và map kết quả 
+trả về với đối tượng tương ứng của ứng dụng Java.
+
+2. Cách config
+3. Session Factory
+- Nó chịu trách nhiệm tạo ra các session 
+	3.1 Cách thức hoạt động của SessionFactory
+		b1: Khởi tạo SessionFactory
+		b2: Tạo Session
+		b3: Đóng SessionFactory: 
+	3.4 Các phương thức quan trọng của SessionFactory
+		- OpenSession():
+			+ Phương thức này tạo ra một Session mới và mở kết nối với cơ sở dữ liệu. 
+			+ có thể sử dụng Session này để thực hiện các thao tác CRUD trên các đối tượng.
+ví dụ: Session session = sessionFactory.openSession();
+		- getCurrentSession():
+			+  Phương thức này tạo và quản lý Session trong phạm vi một giao dịch (transaction). 
+			+ Khi sử dụng getCurrentSession(), Hibernate tự động liên kết Session với giao dịch hiện tại. 
+			Điều này làm cho nó trở nên rất hữu ích trong các ứng dụng web hoặc Spring vì nó giúp tự động quản lý giao dịch
+ví dụ: Session session = sessionFactory.getCurrentSession();
+		- close(): 
+			+ Phương thức này đóng SessionFactory, giải phóng tất cả các tài nguyên đã sử dụng. 
+			+ Khi ứng dụng không còn sử dụng Hibernate, bạn cần đóng SessionFactory để giải phóng tài nguyên
+ví dụ: sessionFactory.close();
+
+4. Session
+- Session là giao diện chính trong Hibernate để thực hiện các thao tác CRUD với cơ sở dữ liệu.
+- Nó đại diện cho một phiên làm việc với cơ sở dữ liệu trong suốt một giao dịch
+- Mỗi Session được liên kết với một đối tượng Transaction, cho phép bạn thực hiện các thao tác
+ dữ liệu trong một giao dịch cụ thể.
+- Session được sử dụng để truy vấn cơ sở dữ liệu, lưu trữ, cập nhật và xoá các đối tượng trong cơ sở dữ liệu.
+
+	4.1 Các phương thức của session:
+		- save():
+			+ Phương thức  này lưu trữ 1 đối tượng vào cơ sỏ dữ liệu 
+			+ Nếu đối tượng chưa có id(chưa được lưu vào cơ sở dữ liệu ), Hibernate sẽ tự động tạo ID cho đối 
+			  tượng đó
+		VD: session.save(productEntity)
+		
+		- update()
+			+ Phương thức này cập nhật một đối tượng đã tồn tại trong cơ sở dữ liệu . Hibernate sẽ kiểm tra sự
+			thay đổi của đối tượng  và chỉ thực hiện cập nhật khi có sự thay đổi 
+		VD:session.update(productEntity)
+		
+		-get()
+			+ Truy vấn csdl và trả về đối tượng nếu tồn tại
+			+ Nếu không tìm thấy đối tượng thì trả về null
+		VD: ProductEntity  productEntity = session.get(ProductEntity.class,1) // truy vấn theo id = 1
+		
+		-load()
+			+ Tương tự với get(), nhưng nếu đôi tượng không tồn tại load(), load sẽ ném ra 1 ngoại lệnh
+			ObjectNotFoundException
+		
+		-persít()
+			+ Phương thức này giống save(), nhưng khác một chút về hành vi: persist() sẽ không trả về ID 
+			của đối tượng, trong khi save() có thể trả về ID.
+			Code ví dụ: session.persist(productEntity);
+		
+		- createQuery():
+			+ Phương thức này dùng để tạo ra các truy vấn HQL (Hibernate Query Language) hoặc 
+			JPQL (Java Persistence Query Language).
+		- createCriteria():
+			+ Phương thức này cung cấp một cách khác để xây dựng các truy vấn thông qua Criteria API 
+			(API được Hibernate cung cấp để tạo truy vấn mà không cần viết HQL hoặc SQL).
+		
+	- HQL
+	- Criteria
+5.Transaction
+
+
+- Làm bài
+b1:Tạo dao tên là ProductHibernateRepostoryImpl
+b2: Đánh dấu là @Repository và đánh dấu bean cho nó tức là tên cho nó
+b3: @Repository("HibernateRepostoryImpl")
+b4: Quay trở lại với service khi hiện tại chúng ta có 2 lớp dao impl
+thì ở bên service chúng ta làm gì để biết gọi thằng nào vào thì bây giờ bên service chúng ta 
+sử dụng  @Qualifier xong truyền thằng muốn truyền vào trong ngoặc
+ @Qualifier("productHibernateRepositoryImpl")
+b5:lên dao impl vào đó tạo ra 1 thằng sessionFactory
+private final SessionFactory sessionFactory;
+b6: Sau đó tiêm phụ thuộc vào 
+ public ProductHibernateRepositoryImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+b7: Mở session
+  Session session = sessionFactory.openSession();
+b8;Sử dụng transaction = session.beginTransaction(); để bắt đầu một giao dịch.
+b9:Viết câu query
+ String hql = "from ProductEntity";
+b10:        Query query = session.createQuery(hql,ProductEntity.class);
+Nó cho phép bạn chuyển đổi một chuỗi HQL thành một đối tượng Query, 
+từ đó bạn có thể thực hiện các thao tác truy vấn trên cơ sở dữ liệu một cách hiệu quả và dễ dàng.
+-> Tạo ra câu query 
+b11:        List<ProductEntity> productEntity = query.getResultList();
+Phương thức getResultList() được gọi trên đối tượng Query. Phương thức này 
+thực hiện truy vấn và trả về một danh sách các kết quả.
+b12: session.close(); 
+Đóng session
+B13:  return productEntities;
+
+b14:Sau đó sang controller gọi lại vào
+	package vn.com.t3h.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import vn.com.t3h.entity.ProductEntity;
+import vn.com.t3h.service.ProductService;
+import java.util.List;
+@Controller
+public class ProductController {
+    @Autowired
+    private ProductService productService;
+    @GetMapping("product")
+    public String product(Model model) {
+    List<ProductEntity> productEntityList = productService.getProduct();
+    model.addAttribute("productEntityList", productEntityList);
+    return "product";
+    }
+}
+
+Ví dụ về chức năng tìm kiếm :
+b1: Trong interface Dao tạo ra 1 List
+    public List<ProductEntity> findByCondition(Double price, String bookTitle,String publisher,String categoryName);
+b2: Mở session :
+	Session session = SessionFactory.openSession();
+b3: Tạo ra câu lệnh sql
+        StringBuilder hql = new StringBuilder("select p from ProductEntity p  join p.category where 1=1");
+
+- StringBuilder là một lớp trong Java cho phép bạn tạo và thao tác với chuỗi một cách hiệu quả. 
+Nó được sử dụng khi bạn cần xây dựng chuỗi động mà không muốn tạo ra nhiều đối tượng chuỗi không cần thiết.
+- where 1=1: Câu lệnh where 1=1 thường được sử dụng như một điều kiện khởi đầu cho các truy vấn, cho phép bạn
+dễ dàng thêm các điều kiện khác sau này mà không cần phải lo lắng về cú pháp (vì 1=1 luôn đúng).
+	
+	Sử dụng StringBuilder vì có thể cộng chuỗi được vào
+- StringUtils.hasText(publisher) là một phương thức trong thư viện Spring Framework, 
+	được sử dụng để kiểm tra xem một chuỗi có chứa văn bản hay không
+	Phương thức hasText kiểm tra xem chuỗi str có chứa văn bản không. Cụ thể, nó sẽ trả về true nếu:
+	Chuỗi không phải là null.
+	Chuỗi không phải là chuỗi rỗng ("" hoặc " ").
+	Chuỗi không chỉ bao gồm các ký tự trắng (space, tab, newline, v.v.)
+b4: Ở bước này chúng ta sẽ kiểm tra điều kiện trước khi truy vấn hql
+		if (price != null) {
+            hql.append(" and p.price = :price" );
+        }
+        if (StringUtils.hasText(bookTitle)) {
+            hql.append(" and p.bookTitle = :bookTitle");
+        }
+        if(StringUtils.hasText(publisher)) {
+            hql.append(" and p.publisher =:publisher");
+        }
+        if(StringUtils.hasText(categoryName)) {
+            hql.append(" and c.name =:categoryName");
+        }
+ Phương thức .append trong Java được sử dụng để thêm (nối) một chuỗi vào một đối tượng StringBuilder
+=> Khi kiểm tra điều kiện này ví dụ nếu price khác null thì and p.price =: price sẽ được thêm vào câu lệnh 
+hql trên kia
+
+b5:Query query = session.createQuery(hql.toString(),ProductEntity.class);
+
+	Dòng mã này là một bước quan trọng để chuyển đổi câu truy vấn HQL thành một đối tượng Query mà bạn có 
+thể sử dụng để thực hiện truy vấn và nhận kết quả từ cơ sở dữ liệu.
+- Tạo Đối Tượng Query: Dòng mã này tạo ra một đối tượng Query từ chuỗi HQL mà bạn đã xây dựng. 
+Điều này cho phép bạn thực hiện truy vấn trên cơ sở dữ liệu.
+- Thực Thi Truy Vấn: Sau khi tạo đối tượng Query, bạn có thể thiết lập các tham số (nếu cần) 
+và thực thi truy vấn để lấy dữ liệu từ cơ sở dữ liệu.
+- session là một đối tượng của lớp Session trong Hibernate. Nó đại diện cho một kết nối đến cơ 
+sở dữ liệu và được sử dụng để thực hiện các thao tác như lưu, truy xuất, cập nhật, và xóa các thực thể.
+- Phương thức createQuery được sử dụng để tạo một đối tượng Query từ một chuỗi HQL.
+- Phương thức toString() của StringBuilder chuyển đổi đối tượng StringBuilder thành một chuỗi String
+- ProductEntity.class:
+ + Đây là tham số thứ hai của phương thức createQuery, chỉ định kiểu dữ liệu của kết quả mà truy vấn sẽ trả về. 
+ + Trong trường hợp này, nó cho biết rằng kết quả sẽ là các đối tượng thuộc lớp ProductEntity.
+
+b6:
+		if(price != null) {
+            query.setParameter("price", price);
+        }
+        if(StringUtils.hasText(bookTitle)) {
+            query.setParameter("bookTitle", bookTitle);
+        }
+        if(StringUtils.hasText(publisher)) {
+            query.setParameter("publisher", publisher);
+        }
+        if(StringUtils.hasText(categoryName)) {
+            query.setParameter("categoryName", categoryName);
+        }
+Kiểm tra điều kiện và gán tham số
+query.setParameter(String name, Object value)
+Phương thức setParameter được sử dụng để thiết lập giá trị cho một tham số trong câu truy vấn HQL.
+Tham số đầu tiên ("price") là tên của tham số trong câu truy vấn HQL mà bạn đã định nghĩa trước đó (ví dụ: :price).
+Tham số thứ hai (price) là giá trị mà bạn muốn gán cho tham số đó.
+
+b7: List<ProductEntity> productEntities = query.getResultList();
+List<ProductEntity>:
+
+Đây là kiểu dữ liệu của biến productEntities.
+- List: Là một interface trong Java, đại diện cho một danh sách có thể chứa nhiều phần tử. 
+Danh sách này có thể thay đổi kích thước (có thể thêm hoặc xóa phần tử).
+- ProductEntity: Là kiểu dữ liệu của các phần tử trong danh sách. Trong ngữ cảnh này,
+ProductEntity là lớp đại diện cho một sản phẩm trong cơ sở dữ liệu.
+productEntities:
+- Đây là tên biến mà bạn đang khai báo để lưu trữ danh sách các đối tượng ProductEntity.
+- Biến này sẽ được sử dụng để truy cập và thao tác với các sản phẩm mà câu truy vấn đã tìm thấy.
+- query.getResultList():
+	+ Đây là phương thức được gọi từ đối tượng query, mà bạn đã tạo ra trước đó bằng cách sử dụng HQL (Hibernate Query Language).
+	+ Chức năng: Phương thức này thực thi câu truy vấn HQL và trả về một danh sách các kết quả.
+	+ Kết quả trả về là một danh sách chứa các đối tượng ProductEntity tương ứng với các bản ghi 
+	trong cơ sở dữ liệu mà câu truy vấn đã tìm thấy.
+	
+b8: Đóng session
+	session.close();
+b9: Trả về biến productEntities
+  return productEntities;
+  
+b10:Sử dụng cách viết API luôn 
+	Để viết ra API chúng ta sẽ tạo ra sẽ vào controller tạo ra 1 thư mục là resource
+	Tạo ra class ProductResource
+	Để viết API thì ở đầu class đó sử dụng @RestController
+->@RestController: Chú thích này cho biết rằng lớp này là một controller và sẽ trả về dữ liệu JSON.
+	Và sử dụng @RequestMapping("/api/products")
+b11: @Autowired để dependency injection
+	@Autowired
+    private ProductService productService;
+
+ 
+b12:		 public ResponseEntity<List<ProductEntity>> search(@RequestParam String keyword) {} (keyword là tham số người dùng truyền vào) 
+- Để viết được API thì chúng ta phải sử dụng ResponseEntity kiểu trả về sẽ là kiểu List ProductEntity
+- Tên phương thức là search
+- @RequestParam là một annotation trong Spring, cho phép bạn nhận tham số từ URL của yêu cầu HTTP.
+   public ResponseEntity<List<ProductEntity>> search(@RequestParam(required = false , name = "price") Double price,
+                                                      @RequestParam(required = false , name = "price") String bookTitle,
+                                                      @RequestParam(required = false , name = "price") String publisher,
+                                                      @RequestParam(required = false , name = "price") String categoryName) {
+
+    }
+
+- required = false:
+	+ Tham số required xác định liệu tham số này có bắt buộc phải có trong yêu cầu hay không.
+	+ Khi required = false, điều này có nghĩa là tham số price không bắt buộc phải được cung cấp.
+	Nếu không có giá trị cho price trong yêu cầu, phương thức sẽ vẫn hoạt động mà không gây ra lỗi.
+- name = "price":
+	+ Tham số name chỉ định tên của tham số mà bạn muốn ánh xạ từ URL. Trong trường hợp này, nó là "price".
+	+ Người dùng sẽ gửi giá trị cho tham số này trong yêu cầu HTTP, ví dụ: ?price=100.0.
+
+b13: Sau đó khởi tạo ra biến productEntities list để lưu lại kết quả tìm kiếm 
+		        List<ProductEntity> productEntities = productService.findByCondition(price, bookTitle, publisher, categoryName);
+b14:         return ResponseEntity.ok(productEntities);
+sau đó trả về biến đó 
+Sử dụng ResponseEntity trong Spring giúp bạn tạo ra các phản hồi HTTP linh hoạt, rõ ràng và tuân thủ các tiêu chuẩn REST

@@ -196,3 +196,8 @@ Ví dụ hiển thị dữ liệu
 	-  rowNum có kiểu dữ liệu là int
 	
 	Bước 5
+	<mvc:resources mapping="/css/**" location="/WEB-INF/resource/css/" />
+    <mvc:resources mapping="/js/**" location="/WEB-INF/resource/js/" />
+    <mvc:resources mapping="/img/**" location="/WEB-INF/resource/img/" />
+
+- @PathVariable được sử dụng để lấy giá trị từ URL của request. 
