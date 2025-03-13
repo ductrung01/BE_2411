@@ -128,6 +128,8 @@ b9:Viết câu query
 b10:        Query query = session.createQuery(hql,ProductEntity.class);
 Nó cho phép bạn chuyển đổi một chuỗi HQL thành một đối tượng Query, 
 từ đó bạn có thể thực hiện các thao tác truy vấn trên cơ sở dữ liệu một cách hiệu quả và dễ dàng.
+UserEntity.class: Đây là lớp mà truy vấn sẽ ánh xạ kết quả trả về. Điều này cho Hibernate biết rằng 
+nó nên chuyển đổi kết quả truy vấn thành các đối tượng UserEntity.
 -> Tạo ra câu query 
 b11:        List<ProductEntity> productEntity = query.getResultList();
 Phương thức getResultList() được gọi trên đối tượng Query. Phương thức này 
@@ -231,8 +233,7 @@ Tham số đầu tiên ("price") là tên của tham số trong câu truy vấn 
 Tham số thứ hai (price) là giá trị mà bạn muốn gán cho tham số đó.
 
 b7: List<ProductEntity> productEntities = query.getResultList();
-List<ProductEntity>:
-
+- Nên sử dụng ResultList() bởi vì nó mới hơn là get.List()
 Đây là kiểu dữ liệu của biến productEntities.
 - List: Là một interface trong Java, đại diện cho một danh sách có thể chứa nhiều phần tử. 
 Danh sách này có thể thay đổi kích thước (có thể thêm hoặc xóa phần tử).

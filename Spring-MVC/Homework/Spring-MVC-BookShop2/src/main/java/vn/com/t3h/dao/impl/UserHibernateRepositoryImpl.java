@@ -20,7 +20,11 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     @Override
     public List<UserEntity> getAllUser() {
         Session session = sessionFactory.openSession();
-        String sql = "from UserEntity";
+        String sql = "SELECT u " +
+                "FROM UserEntity u " +
+                "JOIN FETCH u.identityCardEntity ic " +
+                "JOIN FETCH u.roles r";
+//        String sql = "from UserEntity";
         Query<UserEntity> query = session.createQuery(sql, UserEntity.class);
         List<UserEntity> list = query.list();
         session.close();
@@ -30,29 +34,37 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<UserEntity> findByUserName(String userName, String fullName) {
+    public List<UserEntity> findByUserName(String userName, String fullName ,String identityNumber) {
         Session session = sessionFactory.openSession();
-        StringBuilder sql = new StringBuilder("select u from UserEntity u join u.identityCardEntity ic where 1=1");
+        StringBuilder hql = new StringBuilder("SELECT u " +
+                "FROM UserEntity u " +
+                "JOIN u.identityCardEntity ic " +
+                "JOIN u.roles r " +
+                "WHERE 1=1");
+       if(userName != null && !userName.equals("")) {
+           hql.append(" and u.userName=:userName ");
+       }
+       if(fullName != null && !fullName.equals("")) {
+           hql.append(" and u.fullName=:fullName ");
+       }
+       if(identityNumber != null && !identityNumber.equals("")) {
+           hql.append(" and u.identityNumber=:identityNumber ");
+       }
 
-        if (userName != null) {
-            sql.append(" and u.username =:userName");
-        }
-        if (fullName != null) {
-            sql.append(" and ic.fullName =:fullName");
-        }
+       Query<UserEntity> query = session.createQuery(hql.toString(),UserEntity.class);
+       if(userName != null && !userName.equals("")) {
+           query.setParameter("userName", userName);
+       }
+       if(fullName != null && !fullName.equals("")) {
+           query.setParameter("fullName", fullName);
+       }
+       if(identityNumber != null && !identityNumber.equals("")) {
+           query.setParameter("identityNumber", identityNumber);
+       }
+       List<UserEntity> userEntities = query.getResultList();
+       session.close();
+       return userEntities;
 
-        Query<UserEntity> query = session.createQuery(sql.toString(), UserEntity.class);
-
-        if (userName != null) {
-            query.setParameter("userName", userName);
-        }
-        if (fullName != null) {
-            query.setParameter("fullName", fullName);
-        }
-
-        List<UserEntity> userEntities = query.getResultList();
-        session.close();
-        return userEntities;
     }
 
 }
