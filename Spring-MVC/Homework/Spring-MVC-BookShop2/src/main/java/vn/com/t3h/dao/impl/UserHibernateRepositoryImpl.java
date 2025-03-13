@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import vn.com.t3h.dao.UserRepository;
 import vn.com.t3h.entity.UserEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -20,18 +21,25 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     @Override
     public List<UserEntity> getAllUser() {
         Session session = sessionFactory.openSession();
-        String sql = "SELECT u " +
-                "FROM UserEntity u " +
-                "JOIN FETCH u.identityCardEntity ic " +
-                "JOIN FETCH u.roles r";
-//        String sql = "from UserEntity";
-        Query<UserEntity> query = session.createQuery(sql, UserEntity.class);
-        List<UserEntity> list = query.list();
-        session.close();
+        List<UserEntity> list = new ArrayList<>();
+
+        try {
+
+            String hql = "FROM UserEntity u " +
+                    "LEFT JOIN FETCH u.identityCardEntity ic " +
+                    "LEFT JOIN FETCH u.roles r";
+
+            Query<UserEntity> query = session.createQuery(hql, UserEntity.class);
+            list = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
         return list;
-
-
     }
+
 
     @Override
     public List<UserEntity> findByUserName(String userName, String fullName ,String identityNumber) {

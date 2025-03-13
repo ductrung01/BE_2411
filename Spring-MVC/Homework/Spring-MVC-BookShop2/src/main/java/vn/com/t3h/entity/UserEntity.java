@@ -2,8 +2,8 @@ package vn.com.t3h.entity;
 
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,11 +13,12 @@ import java.util.Set;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String username;
     private String password;
     @OneToOne(fetch = FetchType.EAGER,mappedBy = "user")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonManagedReference
     private IdentityCardEntity identityCardEntity;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable (
@@ -30,12 +31,12 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public int getId() {
-        return id;
+    public String getPassword() {
+        return password;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {
@@ -46,19 +47,20 @@ public class UserEntity {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public long getId() {
+        return id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(long id) {
+        this.id = id;
     }
-    @JsonBackReference // Ngăn chặn việc lặp lại thông qua quan hệ
+
+    @JsonManagedReference
     public IdentityCardEntity getIdentityCardEntity() {
         return identityCardEntity;
     }
 
-    @JsonBackReference // Ngăn chặn việc lặp lại thông qua quan hệ
+    @JsonManagedReference
     public Set<RoleEntity> getRoles() {
         return roles;
     }

@@ -10,11 +10,11 @@ import vn.com.t3h.entity.UserEntity;
 import vn.com.t3h.service.UserService;
 import java.util.List;
 @Controller
-@RestController
+@RestController("/api")
 public class UserResource {
     @Autowired
     private UserService userService;
-    @GetMapping("/api/users")
+    @GetMapping("/users")
     public ResponseEntity<List<UserEntity>> getAllUsers() {
         List<UserEntity> userEntities = userService.getAllUser();
         if (userEntities.isEmpty()) {

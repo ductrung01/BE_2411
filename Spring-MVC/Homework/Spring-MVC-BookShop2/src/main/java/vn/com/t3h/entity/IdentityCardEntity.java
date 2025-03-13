@@ -1,5 +1,7 @@
 package vn.com.t3h.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class IdentityCardEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", unique = true, nullable = false)
+    @JsonBackReference
     private UserEntity user;
 
     @Column(name = "identity_number", unique = true, nullable = false)
