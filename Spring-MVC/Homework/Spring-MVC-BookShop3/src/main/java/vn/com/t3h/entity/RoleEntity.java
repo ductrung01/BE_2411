@@ -2,14 +2,11 @@ package vn.com.t3h.entity;
 
 
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "role")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

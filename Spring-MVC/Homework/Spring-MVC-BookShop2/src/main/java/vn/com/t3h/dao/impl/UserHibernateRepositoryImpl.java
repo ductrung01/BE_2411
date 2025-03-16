@@ -2,6 +2,7 @@ package vn.com.t3h.dao.impl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import vn.com.t3h.dao.UserRepository;
@@ -24,7 +25,6 @@ public class UserHibernateRepositoryImpl implements UserRepository {
         List<UserEntity> list = new ArrayList<>();
 
         try {
-
             String hql = "FROM UserEntity u " +
                     "LEFT JOIN FETCH u.identityCardEntity ic " +
                     "LEFT JOIN FETCH u.roles r";
@@ -40,39 +40,83 @@ public class UserHibernateRepositoryImpl implements UserRepository {
         return list;
     }
 
-
     @Override
-    public List<UserEntity> findByUserName(String userName, String fullName ,String identityNumber) {
+    public List<UserEntity> findByUserName(String userName, String fullName, String identityNumber) {
         Session session = sessionFactory.openSession();
-        StringBuilder hql = new StringBuilder("SELECT u " +
-                "FROM UserEntity u " +
-                "JOIN u.identityCardEntity ic " +
-                "JOIN u.roles r " +
-                "WHERE 1=1");
-       if(userName != null && !userName.equals("")) {
-           hql.append(" and u.userName=:userName ");
-       }
-       if(fullName != null && !fullName.equals("")) {
-           hql.append(" and u.fullName=:fullName ");
-       }
-       if(identityNumber != null && !identityNumber.equals("")) {
-           hql.append(" and u.identityNumber=:identityNumber ");
-       }
+        StringBuilder hql = new StringBuilder("SELECT u FROM UserEntity u " +
+                "LEFT JOIN FETCH u.identityCardEntity ic " +
+                "LEFT JOIN FETCH u.roles r ");
 
-       Query<UserEntity> query = session.createQuery(hql.toString(),UserEntity.class);
-       if(userName != null && !userName.equals("")) {
-           query.setParameter("userName", userName);
-       }
-       if(fullName != null && !fullName.equals("")) {
-           query.setParameter("fullName", fullName);
-       }
-       if(identityNumber != null && !identityNumber.equals("")) {
-           query.setParameter("identityNumber", identityNumber);
-       }
-       List<UserEntity> userEntities = query.getResultList();
-       session.close();
-       return userEntities;
+        boolean hasWhereClause = false;
+        if ((userName != null && !userName.isEmpty()) ||
+                (fullName != null && !fullName.isEmpty()) ||
+                (identityNumber != null && !identityNumber.isEmpty())) {
+            hql.append("WHERE ");
+            hasWhereClause = true;
+        }
 
+        if (userName != null && !userName.isEmpty()) {
+            hql.append("u.username = :userName ");
+            if ((fullName != null && !fullName.isEmpty()) || (identityNumber != null && !identityNumber.isEmpty())) {
+                hql.append("OR ");
+            }
+        }
+        if (fullName != null && !fullName.isEmpty()) {
+            hql.append("ic.fullName = :fullName ");
+            if (identityNumber != null && !identityNumber.isEmpty()) {
+                hql.append("OR ");
+            }
+        }
+        if (identityNumber != null && !identityNumber.isEmpty()) {
+            hql.append("ic.identityNumber = :identityNumber ");
+        }
+
+        Query<UserEntity> query = session.createQuery(hql.toString(), UserEntity.class);
+
+        if (userName != null && !userName.isEmpty()) {
+            query.setParameter("userName", userName);
+        }
+        if (fullName != null && !fullName.isEmpty()) {
+            query.setParameter("fullName", fullName);
+        }
+        if (identityNumber != null && !identityNumber.isEmpty()) {
+            query.setParameter("identityNumber", identityNumber);
+        }
+
+        List<UserEntity> userEntities = query.getResultList();
+        session.close();
+        return userEntities;
     }
 
+    @Override
+    public Long saveUser(UserEntity user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Long userID = null;
+        try {
+            transaction = session.beginTransaction();
+            userID = (long) session.save(user);
+            System.out.println(userID);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return userID;
+    }
+
+    @Override
+    public UserEntity findById(Long id) {
+        if (id == null) {
+            return null; // Trả về null nếu id không hợp lệ
+        }
+        Session session = sessionFactory.openSession();
+        UserEntity user = session.get(UserEntity.class, id);
+        session.close(); // Đảm bảo đóng session
+        return user; // Trả về user hoặc null nếu không tìm thấy
+    }
 }

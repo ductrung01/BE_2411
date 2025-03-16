@@ -6,5 +6,5 @@ import vn.com.t3h.model.ProductDTO;
 
 public interface ProductService {
     List<ProductEntity> getProduct();
-    public List<ProductEntity> findByCondition(Double price, String bookTitle, String publisher, String categoryName);
+    public List<ProductDTO> findByCondition(Double price, String bookTitle, String publisher, String categoryName);
 }

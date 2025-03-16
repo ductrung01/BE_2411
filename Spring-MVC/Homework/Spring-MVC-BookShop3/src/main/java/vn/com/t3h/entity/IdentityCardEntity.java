@@ -1,13 +1,11 @@
 package vn.com.t3h.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "identity_cards")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class IdentityCardEntity {
 
     @Id
@@ -25,7 +23,7 @@ public class IdentityCardEntity {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "date_of_birth", nullable = true) // Giữ nullable = true
+    @Column(name = "date_of_birth", nullable = false)
     private String dateOfBirth;
 
     @Column(name = "address", nullable = false)

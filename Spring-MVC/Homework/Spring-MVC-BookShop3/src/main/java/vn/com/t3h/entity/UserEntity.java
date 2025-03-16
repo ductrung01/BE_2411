@@ -1,5 +1,7 @@
 package vn.com.t3h.entity;
 
+
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -8,29 +10,24 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String username;
     private String password;
-
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL) // Thêm cascade
+    @OneToOne(fetch = FetchType.EAGER,mappedBy = "user")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonManagedReference
     private IdentityCardEntity identityCardEntity;
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+    @JoinTable (
+        name = "user_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<RoleEntity> roles;
-
     public UserEntity() {
     }
 
@@ -68,11 +65,4 @@ public class UserEntity {
         return roles;
     }
 
-    public void setIdentityCardEntity(IdentityCardEntity identityCardEntity) {
-        this.identityCardEntity = identityCardEntity;
-    }
-
-    public void setRoles(Set<RoleEntity> roles) {
-        this.roles = roles;
-    }
 }

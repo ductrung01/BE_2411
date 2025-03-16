@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.t3h.entity.ProductEntity;
+import vn.com.t3h.model.ProductDTO;
 import vn.com.t3h.service.ProductService;
 /**
  Bài tập 1:
@@ -25,11 +26,11 @@ public class ProductResource {
     @Autowired
     private ProductService productService;
     @GetMapping("/search")
-    public ResponseEntity<List<ProductEntity>> search(@RequestParam(required = false , name = "price") Double price,
+    public ResponseEntity<List<ProductDTO>> search(@RequestParam(required = false , name = "price") Double price,
                                                       @RequestParam(required = false , name = "price") String bookTitle,
                                                       @RequestParam(required = false , name = "price") String publisher,
                                                       @RequestParam(required = false , name = "price") String categoryName) {
-        List<ProductEntity> productEntities = productService.findByCondition(price, bookTitle, publisher, categoryName);
+        List<ProductDTO> productEntities = productService.findByCondition(price, bookTitle, publisher, categoryName);
         return ResponseEntity.ok(productEntities);
         /*
         200 OK: Thực hiện thành công.

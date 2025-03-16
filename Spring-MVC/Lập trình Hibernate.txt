@@ -252,7 +252,26 @@ b8: Đóng session
 	session.close();
 b9: Trả về biến productEntities
   return productEntities;
-  
+b10: Sau khi viết xong thì sang service convert tất cả những gì vừa lấy ra trong Dao về dạng DTO
+	@Override
+    public List<ProductDTO> findByCondition(Double price, String bookTitle, String publisher, String categoryName) {
+        List<ProductEntity> productEntities =  productRepository.findByCondition(price, bookTitle, publisher, categoryName);
+        List<ProductDTO> productDTOS = productEntities.stream().map(data -> {
+            ProductDTO productDTO = new ProductDTO(data.getId(),
+                    data.getBookTitle(), data.getAuthor(), data.getPageCount(),
+                    data.getPublisher(), data.getPublicationYear(), data.getGenre(),
+                    data.getPrice(), data.getDiscount(), data.getStockQuantity(),
+                    data.getDescription());
+            return productDTO;
+        }).collect(Collectors.toList());
+        return productDTOS;
+    } 
+	- productEntities.stream():
+	+ Phương thức stream() được gọi trên danh sách productEntities, biến nó thành một luồng (stream) cho phép 
+	thực hiện các phép toán xử lý dữ liệu một cách linh hoạt và hiệu quả.
+	- .map(data -> {...}):
+	+ Phương thức map được sử dụng để chuyển đổi từng phần tử trong luồng. Trong trường hợp này, mỗi phần tử 
+	data đại diện cho một đối tượng ProductEntity. Đối với mỗi data, bạn sẽ thực hiện một số thao tác để tạo ra một đối tượng ProductDTO.
 b10:Sử dụng cách viết API luôn 
 	Để viết ra API chúng ta sẽ tạo ra sẽ vào controller tạo ra 1 thư mục là resource
 	Tạo ra class ProductResource
@@ -288,3 +307,5 @@ b13: Sau đó khởi tạo ra biến productEntities list để lưu lại kết
 b14:         return ResponseEntity.ok(productEntities);
 sau đó trả về biến đó 
 Sử dụng ResponseEntity trong Spring giúp bạn tạo ra các phản hồi HTTP linh hoạt, rõ ràng và tuân thủ các tiêu chuẩn REST
+
+Lưu ý : Tức là DAO luôn thao tác với Entity còn khi trả giữ liệu về cho người dùng thì phải chuyển sang DTO
