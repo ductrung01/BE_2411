@@ -9,5 +9,6 @@ public interface UserRepository {
     public List<UserEntity> findByUserName(String userName,String fullName , String identityNumber);
     public Long saveUser(UserEntity user);
     UserEntity findById(Long id);
+    public void deleteById(Long id);
 
 }

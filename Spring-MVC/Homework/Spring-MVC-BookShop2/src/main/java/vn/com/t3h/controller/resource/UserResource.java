@@ -41,15 +41,20 @@ public class UserResource {
        return ResponseEntity.ok(userDTOSaved);
 
     }
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<UserDTO> deleteUser(@PathVariable long id) {
-//
-//    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable("id") long id) {
         UserDTO userDTO = userService.findByID(id);
         return ResponseEntity.ok(userDTO);
     }
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable("id") long id) {
+        UserDTO userDTO = userService.findByID(id);
+        userService.deleteUser(id);
+        return ResponseEntity.ok(userDTO);
+    }
+    @Update
+
 //    Bài 2:
 //    từ api lấy danh sách user, sửa api đó thành api cho phép tìm kiếm user theo các tiêu chí sau
 // - username hoặc full_name , truyền dữ liệu theo kiểu param

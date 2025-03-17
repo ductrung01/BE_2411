@@ -96,7 +96,7 @@ public class UserHibernateRepositoryImpl implements UserRepository {
         try {
             transaction = session.beginTransaction();
             userID = (long) session.save(user);
-            System.out.println(userID);
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -112,11 +112,38 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     @Override
     public UserEntity findById(Long id) {
         if (id == null) {
-            return null; // Trả về null nếu id không hợp lệ
+            return null;
         }
         Session session = sessionFactory.openSession();
         UserEntity user = session.get(UserEntity.class, id);
-        session.close(); // Đảm bảo đóng session
-        return user; // Trả về user hoặc null nếu không tìm thấy
+        session.close();
+        return user;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Long userID = null;
+        try{
+            transaction = session.beginTransaction();
+            UserEntity user = session.get(UserEntity.class, id);
+            if (user != null) {
+                session.delete(user);
+            }
+
+            transaction.commit();
+        }
+        catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+
+        }
+        finally {
+            session.close();
+        }
+
     }
 }
