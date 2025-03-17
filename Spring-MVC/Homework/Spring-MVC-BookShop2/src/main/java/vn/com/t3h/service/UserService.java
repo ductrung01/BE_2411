@@ -9,6 +9,6 @@ public interface UserService {
     public List<UserDTO> searchUserByName(String userName, String fullName , String identityNumber);
     public UserDTO addUser(UserDTO userDTO);
     UserDTO findByID(Long id);
-    UserDTO updateUser(UserDTO userDTO);
+    UserDTO updateUser(long id ,UserDTO userDTO);
     void deleteUser(Long id);
 }

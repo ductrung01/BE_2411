@@ -20,7 +20,7 @@ public class UserResource {
         if (userDTOS.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        System.out.println("getAllUsers: " + userDTOS);
+
         return ResponseEntity.ok(userDTOS);
     }
     @GetMapping("/users-search")
@@ -47,13 +47,17 @@ public class UserResource {
         UserDTO userDTO = userService.findByID(id);
         return ResponseEntity.ok(userDTO);
     }
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<UserDTO> deleteUser(@PathVariable("id") long id) {
         UserDTO userDTO = userService.findByID(id);
         userService.deleteUser(id);
         return ResponseEntity.ok(userDTO);
     }
-    @Update
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") long id, @RequestBody UserDTO userDTO) {
+       UserDTO updateUser = userService.updateUser(id,userDTO);
+       return ResponseEntity.ok(updateUser);
+    }
 
 //    Bài 2:
 //    từ api lấy danh sách user, sửa api đó thành api cho phép tìm kiếm user theo các tiêu chí sau

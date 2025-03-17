@@ -149,10 +149,70 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public UserDTO updateUser(UserDTO userDTO) {
-        return null;
+//    @Override
+//    public UserDTO updateUser(long id ,UserDTO userDTO) {
+//
+//        UserEntity user = userRepository.findById(id);
+//       user.setId(id);
+//       user.setUsername(userDTO.getUserName());
+//       user.setPassword(userDTO.getPassword());
+//
+//       IdentityCardEntity identityCardEntity = new IdentityCardEntity();
+//       identityCardEntity.setFullName(userDTO.getFullName());
+//       identityCardEntity.setAddress(userDTO.getAddress());
+//       identityCardEntity.setIdentityNumber(userDTO.getIdentityNumber());
+//       identityCardEntity.setUser(user);
+//       user.setIdentityCardEntity(identityCardEntity);
+//       Set<RoleEntity> roles = new HashSet<>();
+//       for (String roleName : userDTO.getRole_name().split(", ")) {
+//           RoleEntity role = roleRepository.findByRoleName(roleName);
+//           if (role != null) {
+//               roles.add(role);
+//
+//           }
+//
+//
+//       }
+//
+//       user.setRoles(roles);
+////
+////           userRepository.updateUser(user);
+//        return userDTO;
+//
+//    }
+@Override
+public UserDTO updateUser(long id, UserDTO userDTO) {
+    UserEntity user = userRepository.findById(id);
+    if (user == null) {
+        throw new RuntimeException("User not found with id: " + id);
     }
+
+    user.setUsername(userDTO.getUserName());
+    user.setPassword(userDTO.getPassword());
+
+    IdentityCardEntity identityCardEntity = user.getIdentityCardEntity();
+    if (identityCardEntity == null) {
+        identityCardEntity = new IdentityCardEntity();
+        identityCardEntity.setUser(user);
+    }
+    identityCardEntity.setFullName(userDTO.getFullName());
+    identityCardEntity.setAddress(userDTO.getAddress());
+    identityCardEntity.setIdentityNumber(userDTO.getIdentityNumber());
+    user.setIdentityCardEntity(identityCardEntity);
+
+    Set<RoleEntity> roles = new HashSet<>();
+    for (String roleName : userDTO.getRole_name().split(", ")) {
+        RoleEntity role = roleRepository.findByRoleName(roleName);
+        if (role != null) {
+            roles.add(role);
+        }
+    }
+    user.setRoles(roles);
+
+
+    userRepository.updateUser(user);
+    return convertToDTO(user);
+}
 
     @Override
     public void deleteUser(Long id) {

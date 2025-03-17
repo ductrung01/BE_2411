@@ -146,4 +146,27 @@ public class UserHibernateRepositoryImpl implements UserRepository {
         }
 
     }
+
+    @Override
+    public Long updateUser(UserEntity user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Long userID = null;
+
+        try {
+            transaction = session.beginTransaction();
+           session.update(user);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            session.close();
+        }
+        return userID;
+    }
+
 }
+
