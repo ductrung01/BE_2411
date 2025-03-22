@@ -5,10 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping()
-public class AminDetailClaimController {
-    @GetMapping("cms/detail-claim")
+@RequestMapping("/cms")
+public class ClaimController {
+    @GetMapping("/claim-manager")
+    public String claimManager() {
+        return "cms/claim/claim-manager";
+    }
+    @GetMapping("detail-claim")
     public String detailClaim() {
-        return "cms/detail-claim";
+        return "cms/claim/detail-claim";
     }
 }

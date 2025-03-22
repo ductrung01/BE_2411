@@ -13,7 +13,7 @@ public class HomeController {
        localhost:8080/
        localhost:8080/home
         */
-    @GetMapping( value = {"/","home-page"} )
+    @GetMapping( value = {"/","home"} )
     public String home() {
        return "/guest/home-page";
     }
