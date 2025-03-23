@@ -1,23 +1,20 @@
 package vn.com.t3h.claim_manager.service.DTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UserDTO {
     private String code;
     private String username;
-    private String firstName;
-    private String lastName;
     private String fullName;
-    private String createDate;
+    private LocalDateTime createdDate;
     private String address;
 
-    public UserDTO(String code, String username, String firstName, String lastName, String fullName, String createDate, String address) {
+    public UserDTO(String code, String username,  String fullName, LocalDateTime createdDate, String address) {
         this.code = code;
         this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.fullName = fullName;
-        this.createDate = createDate;
+        this.createdDate = createdDate;
         this.address = address;
     }
 
@@ -37,22 +34,6 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -61,12 +42,12 @@ public class UserDTO {
         this.fullName = fullName;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public LocalDateTime getCreateDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createdDate = createDate;
     }
 
     public String getAddress() {

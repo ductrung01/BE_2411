@@ -12,12 +12,14 @@ import vn.com.t3h.claim_manager.mapper.ClaimMapper;
 import vn.com.t3h.claim_manager.repository.ClaimRepository;
 import vn.com.t3h.claim_manager.service.ClaimService;
 import vn.com.t3h.claim_manager.service.DTO.ClaimDTO;
+import vn.com.t3h.claim_manager.service.DTO.ClaimDetailDTO;
 import vn.com.t3h.claim_manager.service.DTO.respond.BaseRespond;
 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,6 +56,14 @@ public class ClaimServiceImpl implements ClaimService {
         respond.setPageSize(pageable.getPageSize());
         respond.setPageIndex(pageable.getPageNumber());
         return respond;
+    }
+
+    @Override
+    public List<ClaimDetailDTO> getDetailClaimById(Long id) {
+        Optional<ClaimEntity> claimEntities = claimRepository.findById(id);
+        List<ClaimDetailDTO> claimDetailDTOs = new ArrayList<>();
+            claimDetailDTOs = claimEntities.map(entity -> claimMapper.toDetailDTO(entity)).stream().collect(Collectors.toList());
+            return claimDetailDTOs;
     }
 }
 //        Cách 1:

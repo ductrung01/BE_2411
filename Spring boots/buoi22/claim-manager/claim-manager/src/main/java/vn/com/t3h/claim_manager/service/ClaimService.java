@@ -3,6 +3,7 @@ package vn.com.t3h.claim_manager.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 import vn.com.t3h.claim_manager.service.DTO.ClaimDTO;
+import vn.com.t3h.claim_manager.service.DTO.ClaimDetailDTO;
 import vn.com.t3h.claim_manager.service.DTO.respond.BaseRespond;
 
 import java.time.LocalDate;
@@ -15,4 +16,5 @@ public interface ClaimService {
            String codeStatus,
            Pageable pageable
     );
+  List<ClaimDetailDTO> getDetailClaimById(Long id);
 }

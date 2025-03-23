@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import vn.com.t3h.claim_manager.entity.ClaimEntity;
 import vn.com.t3h.claim_manager.service.DTO.ClaimDTO;
+import vn.com.t3h.claim_manager.service.DTO.ClaimDetailDTO;
 
 @Mapper (componentModel = "spring")
 public interface ClaimMapper {
@@ -20,10 +21,12 @@ public interface ClaimMapper {
     @Mapping(source = "insuranceProductEntity.name",target="nameProduct")
     @Mapping(source = "insuranceProductEntity.coverage",target="coverageProduct")
     @Mapping(source = "claimStatusEntity.description",target="statusName")
+      ClaimDTO toDTO(ClaimEntity claimEntity); // entity la tham so dau vao cua phuong thuc
 
-
-
-    ClaimDTO toDTO(ClaimEntity claimEntity); // entity la tham so dau vao cua phuong thuc
-
-
+    @Mapping(source ="customerEntity.name" , target = "nameCustomer")
+    @Mapping(source="customerEntity.email", target = "email")
+    @Mapping(source="customerEntity.phoneNumber", target = "phoneNumber")
+    @Mapping(source="insuranceProductEntity.name", target = "nameInsuranceProduct")
+    @Mapping(source = "claimStatusEntity.description",target = "status")
+    ClaimDetailDTO toDetailDTO(ClaimEntity claimEntity);
 }
