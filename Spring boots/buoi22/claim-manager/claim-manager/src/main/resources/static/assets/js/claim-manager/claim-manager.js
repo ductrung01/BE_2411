@@ -1,4 +1,4 @@
-let claimsData = []; // Biến toàn cục để lưu trữ dữ liệu yêu cầu
+let claimsData = [];
 
 async function fetchData() {
     try {
@@ -7,8 +7,8 @@ async function fetchData() {
             throw new Error('Mã trạng thái không hợp lệ');
         }
         const responseData = await response.json();
-        claimsData = responseData.data; // Lưu trữ dữ liệu vào biến toàn cục
-        renderTable(claimsData); // Gọi hàm để hiển thị bảng
+        claimsData = responseData.data;
+        renderTable(claimsData);
     } catch (error) {
         console.log("Lỗi: " + error);
     }
@@ -16,7 +16,7 @@ async function fetchData() {
 
 function renderTable(data) {
     const tbody = document.getElementById("claimTableBody");
-    tbody.innerHTML = ''; // Xóa nội dung cũ trước khi thêm mới
+    tbody.innerHTML = '';
 
     for (const claim of data) {
         const row = document.createElement('tr');
@@ -29,7 +29,7 @@ function renderTable(data) {
                 <td>${claim.coverageProduct}</td>
                 <td>${claim.statusName}</td>
             `;
-        tbody.appendChild(row); // Thêm hàng vào bảng
+        tbody.appendChild(row);
     }
 }
 
@@ -45,7 +45,7 @@ async function searchClaim() {
         const toDate = document.getElementById('to-date').value;
         const trangThaiYeuCau = document.getElementById('trang-thai-yeu-cau').value;
 
-        // Lọc dữ liệu dựa trên điều kiện người dùng nhập
+
         const filteredClaims = responseData.data.filter(claim => {
             const maYeuCauMatch = claim.code.toLowerCase().includes(searchMaYeuCau);
             const ngayGuiYeuCau = new Date(claim.claimDate);
@@ -56,12 +56,12 @@ async function searchClaim() {
             return maYeuCauMatch && fromDateMatch && toDateMatch && trangThaiMatch;
         });
 
-        renderTable(filteredClaims); // Hiển thị bảng với dữ liệu đã lọc
+        renderTable(filteredClaims);
     } catch (error) {
         alert("Lỗi: " + error);
     }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetchData(); // Gọi hàm fetchData khi DOM đã được tải
+    fetchData();
 });
