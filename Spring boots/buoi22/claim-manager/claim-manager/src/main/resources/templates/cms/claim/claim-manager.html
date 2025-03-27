@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
     <script src="../assets/vendor/js/helpers.js"></script>
     <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/claim-manager/claim-manager.js"></script>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -71,7 +72,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 text-right">
-                            <button id="search-button" class="btn btn-primary">Tìm kiếm</button>
+                            <button onclick="searchClaim()" id="search-button" class="btn btn-primary">Tìm kiếm</button>
                         </div>
                     </div>
 
@@ -90,52 +91,9 @@
                                     <th>Trạng thái yêu cầu</th>
                                 </tr>
                                 </thead>
-                                <tbody class="table-border-bottom-0">
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>CL001</strong></td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>Bảo hiểm xe máy</td>
-                                    <td>2024-07-10</td>
-                                    <td>Hư hỏng phần đầu xe do tai nạn</td>
-                                    <td><span class="badge bg-label-primary me-1">Đang xử lý</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>CL002</strong></td>
-                                    <td>Trần Thị B</td>
-                                    <td>Bảo hiểm nhà cửa</td>
-                                    <td>2024-06-25</td>
-                                    <td>Thiệt hại do cháy</td>
-                                    <td><span class="badge bg-label-success me-1">Hoàn thành</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>CL003</strong></td>
-                                    <td>Lê Thị C</td>
-                                    <td>Bảo hiểm sức khỏe</td>
-                                    <td>2024-05-15</td>
-                                    <td>Chi phí khám bệnh</td>
-                                    <td><span class="badge bg-label-info me-1">Đã lên lịch</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>CL004</strong></td>
-                                    <td>Phạm Văn D</td>
-                                    <td>Bảo hiểm du lịch</td>
-                                    <td>2024-04-20</td>
-                                    <td>Hủy chuyến đi do dịch bệnh</td>
-                                    <td><span class="badge bg-label-warning me-1">Đang chờ</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>CL005</strong></td>
-                                    <td>Đỗ Thị E</td>
-                                    <td>Bảo hiểm nhân thọ</td>
-                                    <td>2024-03-10</td>
-                                    <td>Chi phí điều trị bệnh hiểm nghèo</td>
-                                    <td><span class="badge bg-label-danger me-1">Bị từ chối</span></td>
-                                </tr>
+                                <tbody class="table-border-bottom-0" id="claimTableBody">
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -181,27 +139,38 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Lấy tất cả các thẻ th có nội dung là "Mã yêu cầu bồi thường"
-        const thElements = document.querySelectorAll('th');
+    // const dataClaim = {
+    //     "data": [
+    //         {"code": "C001", "customerName": "John Doe", "nameProduct": "Bảo hiểm xe hơi", "claimDate": "2024-04-28", "statusName": "Khởi tạo"},
+    //         {"code": "C002", "customerName": "Jane Smith", "nameProduct": "Bảo hiểm sức khỏe", "claimDate": "2023-08-12", "statusName": "Nhân viên đã xác minh"},
+    //         {"code": "C003", "customerName": "Bob Johnson", "nameProduct": "Bảo hiểm nhà", "claimDate": "2024-07-04", "statusName": "Chấp nhận bồi thường"},
+    //         {"code": "C004", "customerName": "John Doe", "nameProduct": "Bảo hiểm du lịch", "claimDate": "2024-03-30", "statusName": "Nhân viên đang xử lý"},
+    //         {"code": "C005", "customerName": "Jane Smith", "nameProduct": "Bảo hiểm xe hơi", "claimDate": "2024-03-23", "statusName": "Nhân viên đang xử lý"},
+    //         {"code": "C006", "customerName": "John Doe", "nameProduct": "Bảo hiểm sức khỏe", "claimDate": "2024-03-30", "statusName": "Thông tin chưa chính xác"},
+    //         {"code": "C007", "customerName": "Jane Smith", "nameProduct": "Bảo hiểm nhà", "claimDate": "2024-03-23", "statusName": "Khởi tạo"}
+    //     ]
+    // };
+    //
+    // function getData() {
+    //     const tableBody = document.getElementById('claimTableBody');
+    //     dataClaim.data.forEach(claim => {
+    //         const row = `
+    //                 <tr>
+    //                     <td><input type="checkbox"></td>
+    //                     <td><strong>${claim.code}</strong></td>
+    //                     <td>${claim.customerName}</td>
+    //                     <td>${claim.nameProduct}</td>
+    //                     <td>${claim.claimDate}</td>
+    //                     <td>${claim.statusName}</td>
+    //                 </tr>
+    //             `;
+    //         tableBody.innerHTML += row; // Thêm hàng vào bảng
+    //     });
+    // }
+    //
+    // document.addEventListener('DOMContentLoaded', getData);
 
-        thElements.forEach(th => {
-            if (th.textContent.trim() === 'Mã yêu cầu bồi thường') {
-                // Lấy tất cả các td trong cùng cột với th này
-                const thIndex = Array.from(th.parentNode.children).indexOf(th);
-                const tdElements = document.querySelectorAll('tbody tr td:nth-child(' + (thIndex + 1) + ')');
 
-                tdElements.forEach(td => {
-                    // Bọc nội dung của td trong thẻ a
-                    const a = document.createElement('a');
-                    a.href = 'detail-claim.html';
-                    a.textContent = td.textContent;
-                    td.textContent = '';
-                    td.appendChild(a);
-                });
-            }
-        });
-    });
 
     document.addEventListener('DOMContentLoaded', function () {
         // Lấy các ô input và dropdown
