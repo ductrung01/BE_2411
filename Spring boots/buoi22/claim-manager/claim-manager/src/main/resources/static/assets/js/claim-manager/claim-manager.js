@@ -1,67 +1,60 @@
-let claimsData = [];
+ // <td><input type="checkbox"></td>
+// <td><strong>${claim.code}</strong></td>
+// <td>${claim.customerName}</td>
+// <td>${claim.nameProduct}</td>
+// <td>${claim.claimDate}</td>
+// <td>${claim.coverageProduct}</td>
+// <td>${claim.statusName}</td>
 
-async function fetchData() {
+let claimData = [];
+const PAGE_INIT = 0;
+const SIZE_DEFAULT =3;
+const BASE_URL = "http://localhost:8080"
+async function searchClaim(){
+    let claimCode = document.getElementById("search-ma-yeu-cau");
+    let fromDate = document.getElementById("from-date");
+    let toDate = document.getElementById("to-date");
+    let status = document.getElementById("trang-thai-yeu-cau");
+    // tachs nho rvafava truyen cac thong so vao
+    let url =BASE_URL + "/api/claim";
+
     try {
-        const response = await fetch('http://localhost:8080/api/claim');
-        if (!response.ok) {
-            throw new Error('Mã trạng thái không hợp lệ');
+        const response = await fetch(url);// goi api
+        // kieemr tra phan hoi co thanh cong hay khong
+        if(!response.ok){
+            throw new Error('Network response was not ok');
         }
         const responseData = await response.json();
-        claimsData = responseData.data;
-        renderTable(claimsData);
-    } catch (error) {
-        console.log("Lỗi: " + error);
+        claimData = responseData;
+        renderClaim()
+   }catch(error){
+        console.error('Có lỗi xảy ra:', error);
     }
 }
-
-function renderTable(data) {
-    const tbody = document.getElementById("claimTableBody");
-    tbody.innerHTML = '';
-
-    for (const claim of data) {
-        const row = document.createElement('tr');
+async  function renderClaim(){
+    const tbody = document.getElementById("claimTableBody")
+    tbody.innerHTML = "";
+    for(datas of claimData.data){
+        const row = document.createElement('tr'); // Tạo một hàng mới
         row.innerHTML = `
-                <td><input type="checkbox"></td>
-                <td><strong>${claim.code}</strong></td>
-                <td>${claim.customerName}</td>
-                <td>${claim.nameProduct}</td>
-                <td>${claim.claimDate}</td>
-                <td>${claim.coverageProduct}</td>
-                <td>${claim.statusName}</td>
-            `;
-        tbody.appendChild(row);
+        <td><input type="checkbox"></td>
+        <td><strong>${datas.code}</strong></td>
+        <td>${datas.customerName}</td>
+        <td>${datas.nameProduct}</td>
+        <td>${datas.claimDate}</td>
+        <td>${datas.coverageProduct}</td>
+        <td>${datas.statusName}</td>
+        `;
+        tbody.appendChild(row); // Thêm hàng vào tbody
+
     }
+
+}
+async function searchClaim(page){
+searchClaim(PAGE_INIT,SIZE_DEFAULT)
+
 }
 
-async function searchClaim() {
-    try {
-        const response = await fetch('http://localhost:8080/api/claim');
-        if (!response.ok) {
-            throw new Error('Mã trạng thái không hợp lệ');
-        }
-        const responseData = await response.json();
-        const searchMaYeuCau = document.getElementById('search-ma-yeu-cau').value.toLowerCase();
-        const fromDate = document.getElementById('from-date').value;
-        const toDate = document.getElementById('to-date').value;
-        const trangThaiYeuCau = document.getElementById('trang-thai-yeu-cau').value;
-
-
-        const filteredClaims = responseData.data.filter(claim => {
-            const maYeuCauMatch = claim.code.toLowerCase().includes(searchMaYeuCau);
-            const ngayGuiYeuCau = new Date(claim.claimDate);
-            const fromDateMatch = !fromDate || ngayGuiYeuCau >= new Date(fromDate);
-            const toDateMatch = !toDate || ngayGuiYeuCau <= new Date(toDate);
-            const trangThaiMatch = !trangThaiYeuCau || claim.statusName === trangThaiYeuCau;
-
-            return maYeuCauMatch && fromDateMatch && toDateMatch && trangThaiMatch;
-        });
-
-        renderTable(filteredClaims);
-    } catch (error) {
-        alert("Lỗi: " + error);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    fetchData();
-});
+ window.onload = function() {
+     searchClaim(PAGE_INIT,SIZE_DEFAULT)
+ };

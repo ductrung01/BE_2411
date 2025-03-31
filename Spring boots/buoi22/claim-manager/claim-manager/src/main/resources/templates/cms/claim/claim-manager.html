@@ -1,3 +1,5 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style layout-menu-fixed" dir="ltr"
       data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -62,8 +64,8 @@
                             <label for="trang-thai-yeu-cau">Trạng thái yêu cầu</label>
                             <select id="trang-thai-yeu-cau" class="form-control">
                                 <option value="">Tất cả trạng thái</option>
-                                <option value="Đang xử lý">Đang xử lý</option>
-                                <option value="Hoàn thành">Hoàn thành</option>
+                                <option value="Đang xử lý">Khởi tạo</option>
+                                <option value="Hoàn thành">Nhân viên đang xử lý</option>
                                 <option value="Đã lên lịch">Đã lên lịch</option>
                                 <option value="Đang chờ">Đang chờ</option>
                                 <option value="Bị từ chối">Bị từ chối</option>
@@ -72,7 +74,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 text-right">
-                            <button onclick="searchClaim()" id="search-button" class="btn btn-primary">Tìm kiếm</button>
+                            <button onclick="actionSearch()" id="search-button" class="btn btn-primary">Tìm kiếm</button>
                         </div>
                     </div>
 

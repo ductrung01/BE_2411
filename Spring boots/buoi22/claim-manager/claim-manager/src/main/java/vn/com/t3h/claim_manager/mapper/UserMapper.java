@@ -10,4 +10,7 @@ public interface UserMapper {
     @Mapping(expression = "java(userEntity.getFirstName() + ' ' + userEntity.getLastName())", target = "fullName")
 //    @Mapping(source = "createdDate", target = "createDate")
     UserDTO toDTO(UserEntity userEntity);
+
+    UserEntity toUserEntity(UserDTO userDTO);
+
 }

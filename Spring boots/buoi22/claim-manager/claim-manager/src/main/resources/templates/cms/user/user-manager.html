@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style layout-menu-fixed" dir="ltr"
+<html xmlns:th="http://www.thymeleaf.org" lang="vi" class="light-style layout-menu-fixed" dir="ltr"
       data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum=1.0"/>
-    <title>Claim Manager - BIDV MetLife</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>Quản lý yêu cầu - BIDV MetLife</title>
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap"
+          rel="stylesheet"/>
     <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css"/>
     <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css"/>
     <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
@@ -16,6 +18,7 @@
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
     <script src="../assets/vendor/js/helpers.js"></script>
     <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/user/user-manager.js"></script>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -26,112 +29,57 @@
             <div class="content-wrapper">
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <h4 class="fw-bold py-3 mb-4 d-flex justify-content-between align-items-center">
-                        <span><span class="text-muted fw-light">User manager /</span> List user</span>
-                        <div>
-                            <button class="btn btn-primary btn-sm"><i class="bx bx-check-circle me-1"></i> Đã tiếp nhận</button>
-                            <button class="btn btn-secondary btn-sm"><i class="bx bx-search-alt me-1"></i> Đã xác minh</button>
-                            <button class="btn btn-success btn-sm"><i class="bx bx-task me-1"></i> Hoàn tất quy trình</button>
-                            <button class="btn btn-info btn-sm"><i class="bx bx-like me-1"></i> Chấp nhận</button>
-                            <button class="btn btn-danger btn-sm"><i class="bx bx-x-circle me-1"></i> Từ chối</button>
-                        </div>
+                        <span><span class="text-muted fw-light">Quản lý người dùng /</span> Danh sách người dùng</span>
                     </h4>
                     <div class="row mb-3">
                         <div class="col-md-3">
-                            <label for="search-ma-user">Mã user</label>
-                            <input type="text" id="search-ma-user" class="form-control" placeholder="Nhập mã user">
+                            <label for="search-ma-yeu-cau">Mã người dùng</label>
+                            <input type="text" id="search-ma-yeu-cau" class="form-control"
+                                   placeholder="Nhập mã người dùng">
                         </div>
                         <div class="col-md-3">
                             <label for="from-date">Từ ngày</label>
                             <input type="date" id="from-date" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label for="search-user-address">Địa chỉ</label>
-                            <input type="text" id="search-user-address" class="form-control" placeholder="Nhập địa chỉ user">
+                            <label for="to-date">Đến ngày</label>
+                            <input type="date" id="to-date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="phone">Số điện thoại</label>
+                            <input type="text" id="phone" class="form-control"
+                                   placeholder="Nhập số điện thoại">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 text-right">
                             <button id="search-button" class="btn btn-primary">Tìm kiếm</button>
+                            <button id="create-button" class="btn btn-success">Tạo mới người dùng</button>
                         </div>
                     </div>
+
                     <div class="card">
                         <div class="table-responsive text-nowrap">
                             <table class="table">
                                 <thead>
                                 <tr>
                                     <th><input type="checkbox" id="selectAll"></th>
-                                    <th>Mã user</th>
+                                    <th>Mã người dùng</th>
                                     <th>Username</th>
-                                    <th>Fullname</th>
-                                    <th>Ngày bắt đầu</th>
+                                    <th>Họ và tên</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Ngày tạo</th>
                                     <th>Địa chỉ</th>
                                 </tr>
                                 </thead>
-                                <tbody class="table-border-bottom-0">
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>USER001</strong></td>
-                                    <td>nguyenvana</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>2024-07-10</td>
-                                    <td>Hà Nội</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>USER002</strong></td>
-                                    <td>tranthib</td>
-                                    <td>Trần Thị B</td>
-                                    <td>2024-06-25</td>
-                                    <td>TP. Hồ Chí Minh</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>USER003</strong></td>
-                                    <td>lethic</td>
-                                    <td>Lê Thị C</td>
-                                    <td>2024-05-15</td>
-                                    <td>Đà Nẵng</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>USER004</strong></td>
-                                    <td>phamvand</td>
-                                    <td>Phạm Văn D</td>
-                                    <td>2024-04-20</td>
-                                    <td>Hải Phòng</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="recordCheckbox"></td>
-                                    <td><strong>USER005</strong></td>
-                                    <td>dothie</td>
-                                    <td>Đỗ Thị E</td>
-                                    <td>2024-03-10</td>
-                                    <td>Cần Thơ</td>
-                                </tr>
+                                <tbody class="table-border-bottom-0" id="bodyTableData">
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <nav aria-label="Page navigation" style="margin-top: 2%; padding-right: 2%;">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
+                    <div class="pagination" id="pagination"></div>
                 </div>
+
                 <div th:include="cms/common/footer::footer"></div>
                 <div class="content-backdrop fade"></div>
             </div>
@@ -139,58 +87,88 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
 </div>
+
 <script src="../assets/vendor/libs/jquery/jquery.js"></script>
 <script src="../assets/vendor/libs/popper/popper.js"></script>
 <script src="../assets/vendor/js/bootstrap.js"></script>
 <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="../assets/vendor/js/menu.js"></script>
 <script src="../assets/js/main.js"></script>
-<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Lấy tất cả các th có nội dung là "Mã yêu cầu bồi thường"
-        const thElements = document.querySelectorAll('th');
+    let currentPage = 0;
+    const pageSize = 20;
 
-        thElements.forEach(th => {
-            if (th.textContent.trim() === 'Mã yêu cầu bồi thường') {
-                const thIndex = Array.from(th.parentNode.children).indexOf(th);
-                const tdElements = document.querySelectorAll('tbody tr td:nth-child(' + (thIndex + 1) + ')');
+    async function fetchUsers(pageIndex = 0) {
+        const code = document.getElementById('search-ma-yeu-cau').value;
+        const fromDate = document.getElementById('from-date').value;
+        const toDate = document.getElementById('to-date').value;
+        const phone = document.getElementById('phone').value;
 
-                tdElements.forEach(td => {
-                    const a = document.createElement('a');
-                    a.href = 'detail-claim.html';
-                    a.textContent = td.textContent;
-                    td.textContent = '';
-                    td.appendChild(a);
-                });
-            }
+        const queryParams = new URLSearchParams({
+            code: code,
+            fromDate: fromDate,
+            toDate: toDate,
+            phone: phone,
+            pageIndex: pageIndex,
+            pageSize: pageSize
         });
-    });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchMaYeuCau = document.getElementById('search-ma-user');
-        const fromDate = document.getElementById('from-date');
-        const searchButton = document.getElementById('search-button');
-
-        function filterTable() {
-            const maYeuCauValue = searchMaYeuCau.value.toLowerCase();
-            const fromDateValue = fromDate.value;
-
-            const rows = document.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                const maYeuCau = row.cells[1].textContent.toLowerCase();
-                const ngayGuiYeuCau = row.cells[4].textContent;
-
-                const showRow =
-                    (maYeuCau.includes(maYeuCauValue)) &&
-                    (!fromDateValue || new Date(ngayGuiYeuCau) >= new Date(fromDateValue));
-
-                row.style.display = showRow ? '' : 'none';
-            });
+        try {
+            const response = await fetch(`http://localhost:8080/api/user?${queryParams.toString()}`);
+            const result = await response.json();
+            if (result.code === 200) {
+                populateTable(result.data);
+                setupPagination(result.totalPages); // Giả sử API trả về tổng số trang
+            } else {
+                console.error('Error fetching users:', result.message);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
         }
+    }
 
-        searchButton.addEventListener('click', filterTable);
+    function populateTable(users) {
+        const bodyTableData = document.getElementById('bodyTableData');
+        bodyTableData.innerHTML = ''; // Clear existing data
+
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="checkbox"></td>
+                <td>${user.code}</td>
+                <td>${user.username}</td>
+                <td>${user.fullName}</td>
+                <td>${user.phone}</td>
+                <td>${user.createdDate ? user.createdDate : 'Chưa có'}</td>
+                <td>${user.address}</td>
+            `;
+            bodyTableData.appendChild(row);
+        });
+    }
+
+    function setupPagination(totalPages) {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = ''; // Clear existing pagination
+
+        for (let i = 0; i < totalPages; i++) {
+            const button = document.createElement('button');
+            button.innerText = i + 1;
+            button.className = 'btn btn-secondary mx-1';
+            button.onclick = () => {
+                currentPage = i;
+                fetchUsers(currentPage);
+            };
+            pagination.appendChild(button);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchUsers(); // Fetch users on page load
+        document.getElementById('search-button').addEventListener('click', () => {
+            currentPage = 0; // Reset to first page on new search
+            fetchUsers(currentPage);
+        });
     });
 </script>
 

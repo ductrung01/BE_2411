@@ -11,7 +11,7 @@ import vn.com.t3h.claim_manager.service.DTO.ClaimDetailDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-25T23:56:14+0700",
+    date = "2025-03-31T14:06:47+0700",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
 )
 @Component
