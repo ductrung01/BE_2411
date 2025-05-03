@@ -1,6 +1,6 @@
 package vn.com.t3h.claim_manager.service.DTO.respond;
 
-public class ReponsePage<T> extends Respond{
+public class ReponsePage<T> extends Response {
     private Integer pageSize;
     private Integer pageIndex;
     private Integer totalPage;

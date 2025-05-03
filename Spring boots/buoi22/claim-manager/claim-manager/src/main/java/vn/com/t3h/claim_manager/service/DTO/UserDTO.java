@@ -1,41 +1,53 @@
 package vn.com.t3h.claim_manager.service.DTO;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UserDTO {
-    private long id;
+
+    private Long id;
     private String username;
+    private String password;
     private String code;
+    private String email;
     private String firstName;
     private String lastName;
-    private String fullName;
     private String phone;
-    private LocalDateTime createdDate;
     private String address;
+    private String stringBase64Avatar;
+    private LocalDateTime creadedDate;
+    private String mimeType;
+    private String RoleName;
 
-    public String getFullName() {
-        return fullName;
+    public String getMimeType() {
+        return mimeType;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public String getRoleName() {
+        return RoleName;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setRoleName(String roleName) {
+        RoleName = roleName;
     }
 
-    public long getId() {
+    public LocalDateTime getCreadedDate() {
+        return creadedDate;
+    }
+
+    public void setCreadedDate(LocalDateTime creadedDate) {
+        this.creadedDate = creadedDate;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,12 +59,28 @@ public class UserDTO {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {
@@ -86,5 +114,12 @@ public class UserDTO {
     public void setAddress(String address) {
         this.address = address;
     }
-}
 
+    public String getStringBase64Avatar() {
+        return stringBase64Avatar;
+    }
+
+    public void setStringBase64Avatar(String stringBase64Avatar) {
+        this.stringBase64Avatar = stringBase64Avatar;
+    }
+}

@@ -2,7 +2,6 @@ package vn.com.t3h.claim_manager.controller.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 //@RestController dungf dde danh dau day la lop viet ra api
 
@@ -17,5 +16,8 @@ public class UserManagerController {
     @GetMapping("/create-user")
     public String createUser() {
         return "cms/user/create-user";
+    } @GetMapping("/detail-user/id")
+    public String detailUser() {
+        return "cms/user/detail-user";
     }
 }

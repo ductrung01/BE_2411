@@ -1,5 +1,3 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style layout-menu-fixed" dir="ltr"
       data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -20,7 +18,6 @@
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
     <script src="../assets/vendor/js/helpers.js"></script>
     <script src="../assets/js/config.js"></script>
-    <script src="../assets/js/claim-manager/claim-manager.js"></script>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -61,20 +58,20 @@
                             <input type="date" id="to-date" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label for="trang-thai-yeu-cau">Trạng thái yêu cầu</label>
-                            <select id="trang-thai-yeu-cau" class="form-control">
+                            <label for="status-claim">Trạng thái yêu cầu</label>
+                            <select id="status-claim" class="form-control">
                                 <option value="">Tất cả trạng thái</option>
-                                <option value="Đang xử lý">Khởi tạo</option>
-                                <option value="Hoàn thành">Nhân viên đang xử lý</option>
-                                <option value="Đã lên lịch">Đã lên lịch</option>
-                                <option value="Đang chờ">Đang chờ</option>
-                                <option value="Bị từ chối">Bị từ chối</option>
+                                <option value="Init">Khởi tạo</option>
+                                <option value="Process">Nhân viên đang xử lý</option>
+                                <option value="Verified">Nhân viên đã xác minh</option>
+                                <option value="Invalid">Thông tin chưa chính xác</option>
+                                <option value="Approve">Chấp nhận bồi thường</option>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 text-right">
-                            <button onclick="actionSearch()" id="search-button" class="btn btn-primary">Tìm kiếm</button>
+                            <button id="search-button" onclick="actionSearch()" class="btn btn-primary">Tìm kiếm</button>
                         </div>
                     </div>
 
@@ -93,9 +90,7 @@
                                     <th>Trạng thái yêu cầu</th>
                                 </tr>
                                 </thead>
-                                <tbody class="table-border-bottom-0" id="claimTableBody">
-
-
+                                <tbody class="table-border-bottom-0" id="bodyTableData">
                                 </tbody>
                             </table>
                         </div>
@@ -104,20 +99,7 @@
     margin-top: 2%;
     padding-right: 2%;
 ">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
+                                <ul class="pagination" id="paginationId">
                                 </ul>
                             </nav>
                         </div>
@@ -139,40 +121,30 @@
 <script src="../assets/vendor/js/menu.js"></script>
 <script src="../assets/js/main.js"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="../js/claim-manager/claim-manager.js"></script>
 
 <script>
-    // const dataClaim = {
-    //     "data": [
-    //         {"code": "C001", "customerName": "John Doe", "nameProduct": "Bảo hiểm xe hơi", "claimDate": "2024-04-28", "statusName": "Khởi tạo"},
-    //         {"code": "C002", "customerName": "Jane Smith", "nameProduct": "Bảo hiểm sức khỏe", "claimDate": "2023-08-12", "statusName": "Nhân viên đã xác minh"},
-    //         {"code": "C003", "customerName": "Bob Johnson", "nameProduct": "Bảo hiểm nhà", "claimDate": "2024-07-04", "statusName": "Chấp nhận bồi thường"},
-    //         {"code": "C004", "customerName": "John Doe", "nameProduct": "Bảo hiểm du lịch", "claimDate": "2024-03-30", "statusName": "Nhân viên đang xử lý"},
-    //         {"code": "C005", "customerName": "Jane Smith", "nameProduct": "Bảo hiểm xe hơi", "claimDate": "2024-03-23", "statusName": "Nhân viên đang xử lý"},
-    //         {"code": "C006", "customerName": "John Doe", "nameProduct": "Bảo hiểm sức khỏe", "claimDate": "2024-03-30", "statusName": "Thông tin chưa chính xác"},
-    //         {"code": "C007", "customerName": "Jane Smith", "nameProduct": "Bảo hiểm nhà", "claimDate": "2024-03-23", "statusName": "Khởi tạo"}
-    //     ]
-    // };
-    //
-    // function getData() {
-    //     const tableBody = document.getElementById('claimTableBody');
-    //     dataClaim.data.forEach(claim => {
-    //         const row = `
-    //                 <tr>
-    //                     <td><input type="checkbox"></td>
-    //                     <td><strong>${claim.code}</strong></td>
-    //                     <td>${claim.customerName}</td>
-    //                     <td>${claim.nameProduct}</td>
-    //                     <td>${claim.claimDate}</td>
-    //                     <td>${claim.statusName}</td>
-    //                 </tr>
-    //             `;
-    //         tableBody.innerHTML += row; // Thêm hàng vào bảng
-    //     });
-    // }
-    //
-    // document.addEventListener('DOMContentLoaded', getData);
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy tất cả các thẻ th có nội dung là "Mã yêu cầu bồi thường"
+        const thElements = document.querySelectorAll('th');
 
+        thElements.forEach(th => {
+            if (th.textContent.trim() === 'Mã yêu cầu bồi thường') {
+                // Lấy tất cả các td trong cùng cột với th này
+                const thIndex = Array.from(th.parentNode.children).indexOf(th);
+                const tdElements = document.querySelectorAll('tbody tr td:nth-child(' + (thIndex + 1) + ')');
 
+                tdElements.forEach(td => {
+                    // Bọc nội dung của td trong thẻ a
+                    const a = document.createElement('a');
+                    a.href = 'detail-claim.html';
+                    a.textContent = td.textContent;
+                    td.textContent = '';
+                    td.appendChild(a);
+                });
+            }
+        });
+    });
 
     document.addEventListener('DOMContentLoaded', function () {
         // Lấy các ô input và dropdown

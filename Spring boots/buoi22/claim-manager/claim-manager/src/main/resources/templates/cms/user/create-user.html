@@ -116,7 +116,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-2">
-                                            <button  onclick="createUser()" class="btn btn-primary me-2">Tạo user</button>
+                                            <button onclick="createUser(event)" class="btn btn-success me-2">Tạo user</button>
                                             <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                                         </div>
                                     </form>
@@ -158,21 +158,6 @@
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/pages-account-settings-account.js"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-<script src="../assets/js/create-user.js"></script>
-
-<script>
-    document.getElementById('upload').addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('uploadedAvatar').setAttribute('src', e.target.result);
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-
-
-</script>
+<script src="../js/user/create-user.js"></script>
 </body>
 </html>

@@ -1,17 +1,15 @@
 package vn.com.t3h.claim_manager.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-
 public class UserEntity extends BaseEntity {
 
     private String username;
@@ -23,7 +21,38 @@ public class UserEntity extends BaseEntity {
     private String phone;
     private String address;
     private String pathAvatar;
-    private LocalDateTime createdDate;
+    @Version // Thêm dòng này
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+/*
+* FetchType.EAGER:Khi lay ra 1 user entity tu database thif orm se tu  dong
+ lay ra het tat ca cac role cuar user entity vao dua vao vaofetch = FetchType.EAGER
+=> Tức là khi lấy ra 1 UserEntity từ database thì orm sẽ tự động lấy ra hết tất cả các role của
+UserEntity và đưa vào roles luôn
+
+* fetch = FetchType.LAZY thì ngược lại
+=> khi lấy ra 1 UserEntity từ database thì orm sẽ KHÔNG lấy ra hết tất cả các role của
+UserEntity và đưa vào roles luôn , và nếu muốn lấy ra danh sách role của UserEntity
+sẽ phải tự thực hiện các query khác . Nếu mà cố tình thực hiện trên query này
+    private Set<RoleEntity> roles = new HashSet<>();
+thì sẽ báo lỗi
+
+* *
+* */
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>();
 
     public String getUsername() {
         return username;
@@ -97,15 +126,6 @@ public class UserEntity extends BaseEntity {
         this.pathAvatar = pathAvatar;
     }
 
-    @Override
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public Set<RoleEntity> getRoles() {
         return roles;
     }
@@ -113,14 +133,4 @@ public class UserEntity extends BaseEntity {
     public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
     }
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-
-    private Set<RoleEntity> roles = new HashSet<>();
-
 }

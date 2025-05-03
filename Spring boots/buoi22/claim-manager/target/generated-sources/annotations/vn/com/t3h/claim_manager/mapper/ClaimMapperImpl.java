@@ -11,8 +11,8 @@ import vn.com.t3h.claim_manager.service.DTO.ClaimDetailDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-31T14:06:47+0700",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
+    date = "2025-04-24T16:39:40+0700",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 @Component
 public class ClaimMapperImpl implements ClaimMapper {
