@@ -47,19 +47,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String tokenJwt = null;
     Cookie [] cookies = request.getCookies();
     if (cookies == null) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No cookies");
       return;
     }
+
     for (Cookie cookie : cookies) {
-      if(JWT.JWT.name().equals(cookie.getName())){
+      if (JWT.JWT.name().equals(cookie.getName())) {
         tokenJwt = cookie.getValue();
-      break;
+        break;
       }
     }
-    if(StringUtils.isEmpty(tokenJwt) || !jwtService.validateToken(tokenJwt)){
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+
+    if (!StringUtils.hasText(tokenJwt) || !jwtService.validateToken(tokenJwt)) {
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
 
     }
+    System.out.println("Token in cookie: " + tokenJwt);
+    System.out.println("Token valid: " + jwtService.validateToken(tokenJwt));
+
+
 //    token hop le => cho qua den tang rest controller hoac tang controller
     filterChain.doFilter(request, response);
   }

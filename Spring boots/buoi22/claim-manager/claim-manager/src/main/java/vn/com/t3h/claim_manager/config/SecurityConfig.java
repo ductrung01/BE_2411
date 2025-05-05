@@ -72,7 +72,7 @@ public class SecurityConfig {
         .formLogin(// custom form login ko su dung form login mac dinh cua spring security
             form ->
                 form.loginPage("/login")// page login duoc custom
-//                    .loginProcessingUrl("/process_login")//  url de view gui username, password len cho server, config tai form login o page login
+                    .loginProcessingUrl("/process_login")//  url de view gui username, password len cho server, config tai form login o page login
                     .successHandler(customAuthenticationSuccessHandler) //		Tức là config xử lý trong class này customAuthenticationSuccessHandler khi login thành công
 //                    .defaultSuccessUrl("/process-after-login-susscess",
 //                        true)///process-after-login-susscess URL duoc dieu huong den khi login thanh cong, su dung de xu ly tu dong dieu huong login page theo role, vi du : admin -> cms/home , user -> /home
